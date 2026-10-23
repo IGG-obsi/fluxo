@@ -184,6 +184,41 @@ details.tag{padding:0 18px}
 .chk{display:flex;gap:10px;align-items:center;padding:10px 0;font-size:15px;cursor:pointer}
 .chk input{width:20px;height:20px;padding:0;accent-color:var(--acc);flex-shrink:0}
 #pages{position:fixed;inset:0;z-index:25;display:none}
+.yearsel{display:flex;align-items:center;justify-content:space-between;margin:16px 18px;border:2px solid var(--line);border-radius:40px;padding:4px 8px}
+.yearsel b{font-size:20px}
+.yearsel button{width:44px;height:44px;display:flex;align-items:center;justify-content:center}
+.yearsel svg{width:24px;height:24px}
+.howto{border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.howto summary{list-style:none;display:flex;justify-content:space-between;align-items:center;padding:22px 18px;color:var(--mut);font-weight:700;font-size:18px;cursor:pointer}
+.howto summary::-webkit-details-marker{display:none}
+.howto summary svg{width:22px;height:22px;transition:transform .15s}
+.howto[open] summary svg{transform:rotate(180deg)}
+.howto p{padding:0 18px 24px;font-size:19px;line-height:1.5;margin-top:-6px}
+.ylbl{color:var(--mut);font-weight:700;font-size:18px;padding:24px 18px 16px;border-bottom:1px solid var(--line)}
+.ybig{padding:24px 18px 10px}
+.ybig .k{color:var(--mut);font-weight:700;font-size:18px}
+.ybig .v{font-size:46px;font-weight:800;margin-top:4px}
+.ymrow{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;padding:24px 18px;border-bottom:1px solid var(--line);font-size:21px;width:100%;text-align:left}
+.ymrow>b{font-weight:700}
+.ymrow .r{text-align:right}
+.ymrow .r .s{color:var(--mut);margin-top:10px}
+.yblock{display:block;width:100%;text-align:left;padding:24px 18px;border-bottom:1px solid var(--line);font-size:21px}
+.yblock .hd{display:flex;justify-content:space-between;font-weight:700}
+.ecobar{display:flex;align-items:center;gap:8px;margin:14px 0}
+.ecobar .pbar{flex:1;width:auto;margin:0}
+.ecolbl{display:flex;justify-content:space-between;font-size:20px;line-height:1.5}
+.ecolbl .k{color:var(--mut);font-weight:700}
+.ecolbl div:last-child{text-align:right}
+.tsearch{display:flex;align-items:center;gap:14px;padding:6px 18px;border-bottom:1px solid var(--line);color:var(--mut)}
+.tsearch svg{width:26px;height:26px;flex-shrink:0}
+.tsearch input{border:0;background:transparent;padding:18px 0;font-size:20px;border-radius:0}
+.tprow{display:flex;align-items:center;gap:16px;width:100%;padding:24px 18px;border-bottom:1px solid var(--line);font-size:21px;font-weight:700;text-align:left;cursor:pointer}
+.tprow .tg{width:36px;height:22px;flex-shrink:0;clip-path:polygon(0 0,75% 0,100% 50%,75% 100%,0 100%);border-radius:3px}
+.tprow .grow{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.tprow .cb{width:28px;height:28px;border:2px solid #5a5e66;border-radius:5px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.tprow.on .cb{background:var(--acc);border-color:var(--acc)}
+.tprow .cb svg{width:20px;height:20px;color:#fff;visibility:hidden}
+.tprow.on .cb svg{visibility:visible}
 .phead.amt .rs{font-size:42px;font-weight:800}
 .frow{position:relative;display:flex;align-items:center;gap:16px;padding:0 22px;min-height:76px;border-bottom:1px solid var(--line);font-size:21px;cursor:pointer}
 .frow .ficon{width:30px;display:flex;justify-content:center;color:var(--txt);flex-shrink:0}
@@ -370,6 +405,7 @@ const saveUI=()=>store.set(UI_KEY,JSON.stringify(ui));
 let cache=null;
 function save(){store.set(DB_KEY,JSON.stringify(db));store.set(DIRTY_KEY,'1');cache=null;scheduleSync()}
 const live=o=>Object.values(o).filter(x=>!x.del);
+const tagsOf=it=>(Array.isArray(it.tag)?it.tag:(it.tag?[it.tag]:[])).filter(id=>db.tags[id]&&!db.tags[id].del);
 
 /* ---------- recurrence ---------- */
 function nth(s,i){
@@ -418,7 +454,7 @@ function compute(){
       const ex=s.exc&&s.exc[d];
       if(ex&&ex.del)continue;
       const pick=k=>ex&&ex[k]!==undefined?ex[k]:s[k];
-      (items[d]||(items[d]=[])).push({sid:s.id,date:d,idx:i,type:s.type,amount:+pick('amount')||0,desc:pick('desc')||'',tag:pick('tag')||'',card:pick('card')||'',rec:!!(s.rep&&s.rep!=='none')});
+      (items[d]||(items[d]=[])).push({sid:s.id,date:d,idx:i,type:s.type,amount:+pick('amount')||0,desc:pick('desc')||'',tag:pick('tag')||[],card:pick('card')||'',rec:!!(s.rep&&s.rep!=='none')});
     }
   }
   const pt=prevTotal();
@@ -428,7 +464,7 @@ function compute(){
   for(let d=from;d<=to;d=addDays(d,1)){
     const list=items[d]||[];
     const sums=z(),bs=z(),ts=z();
-    for(const it of list){sums[it.type]+=it.amount;if(!tagFlag(it.tag,'noSaldo'))bs[it.type]+=it.amount;if(!tagFlag(it.tag,'noTot'))ts[it.type]+=it.amount}
+    for(const it of list){const tg=tagsOf(it);sums[it.type]+=it.amount;if(!tg.some(id=>tagFlag(id,'noSaldo')))bs[it.type]+=it.amount;if(!tg.some(id=>tagFlag(id,'noTot')))ts[it.type]+=it.amount}
     const projD=d>today&&pt>0?pt/divFor(d):0;
     sums.diario+=projD;bs.diario+=projD;ts.diario+=projD;
     if(list.length||projD)started=true;
@@ -572,10 +608,10 @@ function openFilter(){
 
 /* ---------- day detail ---------- */
 function itemRow(it){
-  const tag=it.tag&&db.tags[it.tag]&&!db.tags[it.tag].del?db.tags[it.tag]:null;
+  const tgs=tagsOf(it).map(id=>db.tags[id]);
   const card=it.card&&db.cards[it.card]?db.cards[it.card].name:'';
   const sign=it.type==='entrada'?'+':'−';
-  return `<button class="li" data-sid="${it.sid}" data-date="${it.date}">${ic(it.type,'lg')}<div class="grow"><div class="t">${esc(it.desc||TYPES[it.type].one)}${it.rec?' <span class="mut">↻</span>':''}</div><div class="sub">${tag?`<span class="chip" style="background:${tag.color}">${esc(tag.name)}</span>`:''}${card?esc(card)+' · ':''}${niceDate(it.date)}</div></div><span class="amt">${sign} ${money(it.amount)}</span></button>`;
+  return `<button class="li" data-sid="${it.sid}" data-date="${it.date}">${ic(it.type,'lg')}<div class="grow"><div class="t">${esc(it.desc||TYPES[it.type].one)}${it.rec?' <span class="mut">↻</span>':''}</div><div class="sub">${tgs.map(tag=>`<span class="chip" style="background:${tag.color}">${esc(tag.name)}</span>`).join('')}${card?esc(card)+' · ':''}${niceDate(it.date)}</div></div><span class="amt">${sign} ${money(it.amount)}</span></button>`;
 }
 function bindItems(root){root.querySelectorAll('.li[data-sid]').forEach(b=>b.onclick=()=>{const it=(compute().items[b.dataset.date]||[]).find(x=>x.sid===b.dataset.sid);if(it)openForm({edit:it})})}
 function openDay(k,f){
@@ -671,7 +707,7 @@ function openForm(o){
   let type=edit?edit.type:(o.type||'diario');
   const rep0=s?(s.rep||'none'):'none',cnt0=s&&s.count?String(s.count):'';
   const tags=live(db.tags).sort((a,b)=>a.name.localeCompare(b.name)),cards=live(db.cards);
-  let doDel=()=>{};
+  let doDel=()=>{};let selTags=edit?tagsOf(edit):[];
   const body=`<button class="frow" id="rowType" style="width:100%;text-align:left"><span class="ficon" id="typeIc">${ic(type)}</span><span class="fl" id="typeV">${tName(type)}</span><span class="chev">${CHEV}</span></button>
   <div class="frow"><span class="ficon">${SVG_PENS}</span><input class="fin" id="fDesc" placeholder="descrição" value="${esc(edit?edit.desc:'')}"></div>
   <label class="frow" id="rowDate"><span class="ficon">${SVG_CAL2}</span><span class="fl">data</span><span class="fv" id="dateV"></span><span class="chev">${CHEV}</span><input class="ovl" id="fDate" type="date" value="${edit?edit.date:(o.date||todayStr())}"></label>
@@ -679,7 +715,7 @@ function openForm(o){
   <p class="hint ph" id="fatHint"></p>
   <label class="frow"><span class="ficon">${SVG_CALREP}</span><span class="fl" id="repV"></span><span class="chev">${CHEV}</span><select class="ovl" id="fRep">${Object.entries(REP_L).map(([v,l])=>`<option value="${v}" ${v===rep0?'selected':''}>${l}</option>`).join('')}</select></label>
   <div class="frow" id="cntRow"><span class="ficon"></span><span class="fl" style="font-weight:400;color:var(--mut)">quantas vezes?</span><input class="cnt-in" id="fCnt" inputmode="numeric" placeholder="sempre" value="${cnt0}"></div>
-  <label class="frow"><span class="ficon">${SVG_TAG2}</span><span class="fl" id="tagV"></span><span class="chev">${CHEV}</span><select class="ovl" id="fTag"><option value="">sem tag</option>${tags.map(t=>`<option value="${t.id}" ${edit&&edit.tag===t.id?'selected':''}>${esc(t.name)}</option>`).join('')}<option value="__new">+ criar tag…</option></select></label>
+  <button class="frow" id="rowTag" style="width:100%;text-align:left"><span class="ficon">${SVG_TAG2}</span><span class="fl" id="tagV"></span><span class="chev">${CHEV}</span></button>
   <div class="fbtns"><button class="tbtn" id="pgBtn"></button><button class="cbtn" data-pback>cancelar</button></div>
   <p class="hint ph" id="cardHint">dica: escolha o cartão e a data da compra; o app mostra em qual fatura ela cai. parcelado: repete todo mês + nº de parcelas.</p>`;
   openPage({amount:edit?money(edit.amount):'',noClose:true,actions:edit?[{icon:SVG_TRASH,title:'apagar',on:()=>doDel()}]:[],body},sh=>{
@@ -705,7 +741,7 @@ function openForm(o){
       $$('#cardWrap').style.display=isC?'':'none';$$('#cardHint').style.display=isC?'':'none';
       $$('#cardV').textContent=$$('#fCard').value?selText($$('#fCard')):'cartão';
       $$('#repV').textContent=REP_L[r];$$('#cntRow').style.display=r==='none'?'none':'';
-      $$('#tagV').textContent=$$('#fTag').value?selText($$('#fTag')):'tags';
+      $$('#tagV').textContent=selTags.length?selTags.map(id=>db.tags[id]?db.tags[id].name:'').filter(Boolean).join(', '):'tags';
       const [bg,fg]=TBTN[type],btn=$$('#pgBtn');btn.style.background=bg;btn.style.color=fg;
       btn.textContent=edit?'salvar':'adicionar '+tName(type);
       updFat();
@@ -715,14 +751,14 @@ function openForm(o){
     $$('#fDate').addEventListener('change',()=>{fatApplied=false;upd()});
     $$('#fRep').onchange=upd;
     upd();
-    $$('#fTag').onchange=async e=>{if(e.target.value==='__new'){const n=await promptDialog('nova tag','nome da tag','');if(n&&n.trim()){const id=uid();db.tags[id]={id,name:n.trim().slice(0,30),color:TAG_COLORS[live(db.tags).length%TAG_COLORS.length][1],u:now()};save();const op=document.createElement('option');op.value=id;op.textContent=n.trim();e.target.insertBefore(op,e.target.lastElementChild);e.target.value=id}else e.target.value=''}upd()};
+    $$('#rowTag').onclick=()=>tagPicker(selTags,ids=>{selTags=ids;upd()});
     $$('#fCard').onchange=async e=>{fatApplied=false;if(e.target.value==='__new'){const c=await cardDialog(null);if(c&&c.id){const op=document.createElement('option');op.value=c.id;op.textContent=cardLbl(c);e.target.insertBefore(op,e.target.lastElementChild);e.target.value=c.id}else e.target.value=''}upd()};
     $$('#pgBtn').onclick=async()=>{
       const amount=parseMoney(amt.value);
       if(!isFinite(amount)||amount<=0){amt.focus();return toast('informe um valor')}
       const cntRaw=$$('#fCnt').value.trim();
       const vals={type,amount:r2(amount),desc:$$('#fDesc').value.trim(),date:$$('#fDate').value||todayStr(),
-        tag:$$('#fTag').value.replace('__new',''),card:type==='cartao'?$$('#fCard').value.replace('__new',''):'',
+        tag:selTags.slice(),card:type==='cartao'?$$('#fCard').value.replace('__new',''):'',
         rep:$$('#fRep').value,count:cntRaw?Math.max(1,parseInt(cntRaw,10)||1):null,cntChanged:cntRaw!==cnt0};
       if(!edit){
         const id=uid();db.series[id]={id,type,desc:vals.desc,amount:vals.amount,tag:vals.tag,card:vals.card,start:vals.date,rep:vals.rep,count:vals.rep==='none'?null:vals.count,until:null,exc:{},u:now()};
@@ -865,17 +901,44 @@ function bindTotais(root){
   root.querySelectorAll('[data-f]').forEach(b=>b.onclick=()=>{ui.filter=b.dataset.f;saveUI();setTab('saldos')});
 }
 function renderTotais(){const v=$('#view-totais');v.innerHTML=totaisHTML();bindTotais(v)}
-function yearSheet(metric){
+const HOW={
+  perf:['como funciona a performance?','performance é a foto do seu mês financeiro: tudo o que entrou menos tudo o que saiu (saídas fixas, diários, economias, cartão e previsão de diário). positivo = sobrou dinheiro; negativo = faltou.'],
+  eco:['como funciona o economizado?','mostra quanto da sua renda foi separado como economia no mês: economias ÷ entradas. a referência saudável é guardar entre 20% e 30% do que entra.'],
+  custo:['como funciona o custo de vida?','é a soma de tudo que você gasta para se manter, sem contar o que foi para economias: saídas fixas + diários + cartão + previsão de diário. mostra quanto custa manter sua vida funcionando mês a mês.'],
+  avg:['como funciona o diário médio?','é a soma dos gastos diários reais (sem a previsão futura) dividida pelos dias do mês — no mês atual, pelos dias que já passaram. assim você sabe, em média, quanto gasta por dia no seu estilo de vida.']
+};
+const CHEV_L='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 6l-6 6 6 6"/></svg>';
+const CHEV_R='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg>';
+const pctTxt=v=>String(Math.round(v*1000)/10).replace('.',',')+'%';
+const ecoBar=(eco,ent)=>{const pc=ent>0?eco/ent:0;return `<div class="ecobar">${ic('economia')}<span class="pbar"><i style="width:${Math.min(100,pc*100)}%"></i></span>${ic('entrada')}</div><div class="ecolbl"><div><div class="k">economias</div>${money(eco)}</div><div><div class="k">entradas</div>${money(ent)}</div></div>`};
+let howOpen={perf:true,eco:true,custo:true,avg:true};
+function yearSheet(metric,year){
+  year=year||view.y;
   const names={perf:'performance',eco:'economizado',custo:'custo de vida',avg:'diário médio'};
-  let tot=0,h=shead(`${names[metric]} · ${view.y}`)+'<div class="list">';
-  for(let m=1;m<=12;m++){
-    const t=monthTotals(view.y,m);
-    const v=metric==='perf'?t.perf:metric==='eco'?t.economia:metric==='custo'?t.custo:(t.elapsed?t.avg:t.meta);
-    tot+=v;
-    h+=`<button class="li" data-mm="${m}"><div class="grow"><div class="t">${MESES_L[m-1]}</div>${metric==='eco'?`<div class="sub">${(Math.round(t.pct*1000)/10).toString().replace('.',',')}% da renda</div>`:''}</div><span class="amt ${metric==='perf'&&v<0?'gneg':''}">${money(v)}</span></button>`;
+  const today=todayStr(),tp=parseD(today);
+  const ms=[];for(let m=1;m<=12;m++)ms.push(monthTotals(year,m));
+  let b=`<div class="yearsel"><button id="yPrev" title="ano anterior">${CHEV_L}</button><b>${year}</b><button id="yNext" title="próximo ano">${CHEV_R}</button></div>
+  <details class="howto" ${howOpen[metric]?'open':''}><summary>${HOW[metric][0]}${CHEV}</summary><p>${HOW[metric][1]}</p></details>`;
+  if(metric==='perf'){
+    b+=`<div class="ylbl">total por mês</div>`+ms.map((t,i)=>`<button class="ymrow" data-mm="${i+1}"><b>${MESES_L[i]}</b><span class="${t.perf<0?'gneg':''}">${money(t.perf)}</span></button>`).join('');
+  }else if(metric==='custo'){
+    const tot=ms.reduce((a,t)=>a+t.custo,0);
+    b+=`<div class="ybig"><div class="k">total no ano</div><div class="v">${money(tot)}</div></div><div class="ylbl">total por mês</div>`+ms.map((t,i)=>`<button class="ymrow" data-mm="${i+1}"><b>${MESES_L[i]}</b><span>${money(t.custo)}</span></button>`).join('');
+  }else if(metric==='eco'){
+    const eco=ms.reduce((a,t)=>a+t.economia,0),ent=ms.reduce((a,t)=>a+t.entrada,0);
+    b+=`<div class="ybig"><div class="k">total no ano</div><div class="v">${pctTxt(ent>0?eco/ent:0)}</div><div style="font-size:20px">${ecoBar(eco,ent)}</div></div><div class="ylbl">total por mês</div>`+
+      ms.map((t,i)=>`<button class="yblock" data-mm="${i+1}"><div class="hd"><span>${MESES_L[i]}</span><span>${pctTxt(t.pct)}</span></div>${ecoBar(t.economia,t.entrada)}</button>`).join('');
+  }else{
+    b+=`<div class="ylbl">média por mês</div>`+ms.map((t,i)=>{
+      const n=dim(year,i+1),cur=year===tp.y&&i+1===tp.m,den=cur?Math.max(1,t.elapsed):n;
+      return `<button class="ymrow" data-mm="${i+1}"><b>${MESES_L[i]}</b><div class="r"><div>${money(t.dPast/den)}</div><div class="s">${money(t.dPast)} / ${den}</div></div></button>`}).join('');
   }
-  h+=`</div><p style="margin-top:14px"><b>${metric==='avg'?'média do ano':'total do ano'}:</b> ${money(metric==='avg'?tot/12:tot)}</p>`;
-  openSheet(h,s=>s.querySelectorAll('[data-mm]').forEach(b=>b.onclick=()=>{view.m=+b.dataset.mm;closeSheet();render()}));
+  openPage({key:'year',title:names[metric],body:b},pg=>{
+    pg.querySelector('#yPrev').onclick=()=>yearSheet(metric,year-1);
+    pg.querySelector('#yNext').onclick=()=>yearSheet(metric,year+1);
+    pg.querySelector('.howto').addEventListener('toggle',e=>{howOpen[metric]=e.target.open});
+    pg.querySelectorAll('[data-mm]').forEach(x=>x.onclick=()=>{view={y:year,m:+x.dataset.mm};back();if(!isSide())setTab('totais');else render()});
+  });
 }
 
 /* ---------- tags ---------- */
@@ -884,7 +947,7 @@ const SVG_TAGPLUS='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" st
 const SVG_SEARCH='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><circle cx="10" cy="10" r="6"/><path d="M15 15l5 5"/></svg>';
 function renderTags(){
   const n=dim(view.y,view.m),by={};
-  for(let d=1;d<=n;d++)for(const it of dayOf(ds(view.y,view.m,d)).list)if(it.tag)(by[it.tag]||(by[it.tag]=[])).push(it);
+  for(let d=1;d<=n;d++)for(const it of dayOf(ds(view.y,view.m,d)).list)for(const id of tagsOf(it))(by[id]||(by[id]=[])).push(it);
   const tags=live(db.tags).sort((a,b)=>a.name.localeCompare(b.name));
   let h=`<div class="tghead"><span>tags · ${MESES[view.m-1]}/${String(view.y).slice(2)}</span><button id="tgManage" title="editar tags">${SVG_PEN}</button><button id="tgNew" title="criar tag">${SVG_TAGPLUS}</button></div>`;
   if(!tags.length)h+=`<div class="empty"><div class="ecirc">${SVG_TAGPLUS}</div><p>sem tags por aqui. toque no botão acima para criar.</p></div>`;
@@ -900,6 +963,23 @@ function renderTags(){
   v.querySelector('#tgNew').onclick=()=>tagEditor(null);
   const q=v.querySelector('#tgQ');if(q)q.oninput=()=>{const s=q.value.trim().toLowerCase();v.querySelectorAll('details.tag').forEach(d=>d.style.display=d.dataset.name.includes(s)?'':'none')};
 }
+let refreshTagPick=null;
+const SVG_CHECK='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5 9-10"/></svg>';
+function tagPicker(selected,cb){
+  const sel=new Set(selected);let q='';
+  const listHTML=()=>{const tags=live(db.tags).sort((a,b)=>a.name.localeCompare(b.name)).filter(t=>t.name.toLowerCase().includes(q));
+    return tags.map(t=>`<button class="tprow ${sel.has(t.id)?'on':''}" data-id="${t.id}"><span class="tg" style="background:${t.color}"></span><span class="grow">${esc(t.name)}</span><span class="cb">${SVG_CHECK}</span></button>`).join('')
+      ||(live(db.tags).length?'<p class="mut" style="padding:24px 18px">nenhuma tag com esse nome.</p>':`<div class="empty"><div class="ecirc">${SVG_TAGPLUS}</div><p>sem tags por aqui. toque no botão acima para criar.</p></div>`)};
+  openPage({key:'tagpick',mode:'close',title:'tags',actions:[{icon:SVG_TAGPLUS,title:'criar tag',on:()=>tagEditor(null,id=>{sel.add(id)})}],
+    body:`<div class="tsearch">${SVG_SEARCH}<input id="tpQ" placeholder="filtrar tags" autocomplete="off"></div><div id="tpList"></div>`,button:'salvar'},pg=>{
+    const L=pg.querySelector('#tpList');
+    const draw=()=>{L.innerHTML=listHTML();L.querySelectorAll('[data-id]').forEach(b=>b.onclick=()=>{const id=b.dataset.id;sel.has(id)?sel.delete(id):sel.add(id);b.classList.toggle('on',sel.has(id))})};
+    draw();refreshTagPick=draw;
+    pg.querySelector('#tpQ').oninput=e=>{q=e.target.value.trim().toLowerCase();draw()};
+    pg.querySelector('#pgBtn').onclick=()=>{refreshTagPick=null;cb([...sel].filter(id=>db.tags[id]&&!db.tags[id].del));back()};
+    pg._onClose=()=>{refreshTagPick=null};
+  });
+}
 function manageTags(){
   const tags=live(db.tags).sort((a,b)=>a.name.localeCompare(b.name));
   openPage({key:'tagsm',title:'tags',actions:[{icon:SVG_TAGPLUS,title:'criar tag',on:()=>tagEditor(null)}],
@@ -908,9 +988,9 @@ function manageTags(){
     pg.querySelectorAll('[data-id]').forEach(b=>b.onclick=()=>tagEditor(db.tags[b.dataset.id]));
   });
 }
-function tagEditor(t){
+function tagEditor(t,onCreate){
   let color=t?t.color:TAG_COLORS[0][1];
-  const after=()=>{save();render();if(hasPage('tagsm'))manageTags();back()};
+  const after=()=>{save();render();if(hasPage('tagsm'))manageTags();if(refreshTagPick)refreshTagPick();back()};
   openPage({mode:'close',title:t?'editar tag':'criar tag',
     actions:t?[{icon:SVG_TRASH,title:'apagar',on:async()=>{if(!await dialog('apagar tag?','as movimentações continuam, só perdem a tag.',[{label:'apagar',val:true,cls:'primary'}]))return;t.del=true;t.u=now();after()}}]:[],
     body:`<label class="uf"><input id="tgName" maxlength="30" placeholder=" " value="${esc(t?t.name:'')}"><span>nome</span></label><div class="cnt" id="tgCnt" style="margin:8px 18px 0"></div>
@@ -924,7 +1004,7 @@ function tagEditor(t){
     const uc=()=>{cnt.textContent=`${nm.value.length}/30`;btn.disabled=!nm.value.trim()};nm.oninput=uc;uc();
     if(!t)setTimeout(()=>nm.focus(),120);
     s.querySelectorAll('[data-c]').forEach(b=>b.onclick=()=>{color=b.dataset.c;s.querySelectorAll('[data-c]').forEach(x=>x.classList.toggle('on',x===b))});
-    btn.onclick=()=>{const name=nm.value.trim();if(!name)return;const vals={name,color,noSaldo:!s.querySelector('#tgSaldo').checked,noTot:!s.querySelector('#tgTot').checked,u:now()};if(t)Object.assign(t,vals);else{const id=uid();db.tags[id]={id,...vals}}after()};
+    btn.onclick=()=>{const name=nm.value.trim();if(!name)return;const vals={name,color,noSaldo:!s.querySelector('#tgSaldo').checked,noTot:!s.querySelector('#tgTot').checked,u:now()};if(t)Object.assign(t,vals);else{const id=uid();db.tags[id]={id,...vals};if(onCreate)onCreate(id)}after()};
   });
 }
 
