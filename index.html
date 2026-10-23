@@ -479,6 +479,14 @@ input[type=date]{color-scheme:dark}
 .simrow .r small{display:block;color:var(--mut);font-size:13px;margin-top:3px}
 .simtip{font-size:15px;color:var(--mut);padding:14px 0 4px;line-height:1.45}
 .simtip b{color:var(--txt)}
+.row.all{height:auto}
+.row.all .dcell{align-items:flex-start;padding-top:12px}
+.row.all .vstack{display:flex;flex-direction:column;min-width:0}
+.row.all .vcell{height:42px;border-bottom:1px solid var(--line)}
+.row.all .vcell:last-child{border-bottom:0}
+.row.all .vcell .ic{width:22px;height:22px;font-size:12px}
+.row.all .scell{align-items:flex-start;padding-top:10px}
+.row.all.today{border-bottom:2px solid #fff}
 </style>
 </head>
 <body>
@@ -746,17 +754,15 @@ function renderRows(){
     if(wide){
       cell=TYPE_KEYS.map(t=>{const v=day.sums[t];return `<div class="vcell ${v>0?'':'zero'} ${t==='diario'&&projOnly?'proj':''}" data-t="${t}"><span class="val">${v>0?money(v):'–'}</span></div>`}).join('');
     }else if(f==='todas'){
-      const net=day.sums.entrada-day.sums.saida-day.sums.diario-day.sums.economia-day.sums.cartao;
-      const present=TYPE_KEYS.filter(t=>day.sums[t]>0);
-      cell=`<div class="vcell ${present.length?'':'zero'}"><span class="dots">${present.map(t=>`<i style="background:${TYPES[t].color}"></i>`).join('')||ic('todas')}</span><span class="val">${money(net)}</span></div>`;
+      cell=`<div class="vstack">${TYPE_KEYS.map(t=>{const v=day.sums[t];return `<div class="vcell ${v>0?'':'zero'} ${t==='diario'&&projOnly?'proj':''}" data-t="${t}">${ic(t)}<span class="val">${money(v)}</span></div>`}).join('')}</div>`;
     }else{
       const v=day.sums[f];
       cell=`<div class="vcell ${v>0?'':'zero'} ${f==='diario'&&projOnly?'proj':''}">${ic(f)}<span class="val">${money(v)}</span></div>`;
     }
-    h+=`<div class="row ${cls} ${wide?'wide':''}" data-d="${k}"><button class="dcell ${chk?'chk':''}">${d}</button>${cell}<div class="scell ${balCls(day.bal)}">${money(day.bal)}</div></div>`;
+    h+=`<div class="row ${cls} ${wide?'wide':''} ${!wide&&f==='todas'?'all':''}" data-d="${k}"><button class="dcell ${chk?'chk':''}">${d}</button>${cell}<div class="scell ${balCls(day.bal)}">${money(day.bal)}</div></div>`;
   }
   const rows=$('#rows');rows.innerHTML=h;
-  if(scrollKey||wantScrollToday){const tr=scrollKey?rows.querySelector(`.row[data-d="${scrollKey}"]`):rows.querySelector('.row.today');wantScrollToday=false;scrollKey=null;rows.scrollTop=tr?Math.max(0,tr.offsetTop-rows.offsetTop-tr.offsetHeight*3):0}
+  if(scrollKey||wantScrollToday){const tr=scrollKey?rows.querySelector(`.row[data-d="${scrollKey}"]`):rows.querySelector('.row.today');wantScrollToday=false;scrollKey=null;rows.scrollTop=tr?Math.max(0,tr.offsetTop-rows.offsetTop-Math.min(tr.offsetHeight*3,170)):0}
 }
 
 /* row interactions: tap day = check-in, tap cell = day detail, long-press/right-click = add */
