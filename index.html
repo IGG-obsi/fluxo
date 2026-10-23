@@ -334,6 +334,34 @@ input[type=date]{color-scheme:dark}
 }
 .frow .fmain .fl{flex:0 1 auto;overflow:visible;text-overflow:clip}
 .frow .fmain{gap:10px}
+.qn-wrap{position:fixed;inset:0;z-index:45;background:rgba(0,0,0,.55)}
+.qn{position:absolute;left:14px;right:14px;max-width:600px;margin:0 auto;display:flex;align-items:center;gap:10px;background:#1d2025;border-radius:60px;padding:10px 10px 10px 30px;box-shadow:0 10px 40px rgba(0,0,0,.5)}
+.qn .qp{font-size:38px;font-weight:600}
+.qn input{flex:1;min-width:0;font-size:38px;border:0;background:transparent;padding:6px 0;border-radius:0}
+.qn .qx{width:58px;height:58px;border-radius:50%;border:2px solid #3a3e45;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.qn .qok{width:62px;height:62px;border-radius:50%;background:#fff;color:#111;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.qn svg{width:26px;height:26px}
+.page[data-key=hz] .pbody{overflow:hidden;display:flex}
+.page[data-key=hz] .phead h1{font-size:24px}
+.hzw{flex:1;overflow:auto;display:flex;scroll-snap-type:x mandatory;overscroll-behavior:contain}
+.hzc{flex:0 0 33.333%;min-width:118px;scroll-snap-align:start;border-right:1px solid var(--line)}
+.hzh{position:sticky;top:0;z-index:2;height:74px;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:20px;background:var(--bg);border-bottom:1px solid var(--line);cursor:pointer;width:100%}
+.hzh.cur{background:#fff;color:#111}
+.hzr{display:flex;height:74px;border-bottom:1px solid #2a2e35;width:100%}
+.hzr .d{width:37%;display:flex;align-items:center;justify-content:center;font-size:20px;background:var(--bg);flex-shrink:0}
+.hzr .d.we{background:#22272e}
+.hzr .d.td{background:#fff;color:#111;font-weight:700}
+.hzr .v{flex:1;min-width:0;display:flex;align-items:center;justify-content:flex-end;padding-right:14px;font-size:19px;white-space:nowrap}
+.hzr .v.pos2{background:#1f5a2b}.hzr .v.neg2{background:#8c1f24}
+.hzr.empty{cursor:default}.hzr.empty .d,.hzr.empty .v{background:transparent}
+.hzleg{padding:12px 16px calc(12px + env(safe-area-inset-bottom));font-size:12px;color:var(--mut);border-top:1px solid var(--line);display:flex;gap:12px;flex-wrap:wrap;flex-shrink:0}
+.hzleg i{display:inline-block;width:12px;height:12px;border-radius:3px;vertical-align:-2px;margin-right:4px}
+.hzw{overflow-x:auto;overflow-y:hidden}
+.hzc{display:flex;flex-direction:column;height:100%}
+.hzh{position:static;height:50px;flex-shrink:0;font-size:17px}
+.hzr{flex:0 0 calc((100% - 50px) / 31);min-height:0;height:auto;border-bottom-width:1px;padding:0;overflow:hidden}
+.hzr .d{font-size:clamp(11px,1.9vh,17px)}
+.hzr .v{font-size:clamp(11px,1.9vh,17px);padding-right:8px}
 </style>
 </head>
 <body>
@@ -567,7 +595,7 @@ function renderHeader(){
 }
 
 /* ---------- render: saldos ---------- */
-let wantScrollToday=true;
+let wantScrollToday=true,scrollKey=null;
 const isWide=()=>window.matchMedia('(min-width:1000px)').matches;
 const isSide=()=>window.matchMedia('(min-width:1400px)').matches;
 const SHORT={entrada:'entradas',saida:'saídas',diario:'diários',economia:'economias',cartao:'cartão'};
@@ -596,7 +624,7 @@ function renderRows(){
     h+=`<div class="row ${cls} ${wide?'wide':''}" data-d="${k}"><button class="dcell ${chk?'chk':''}">${d}</button>${cell}<div class="scell ${balCls(day.bal)}">${money(day.bal)}</div></div>`;
   }
   const rows=$('#rows');rows.innerHTML=h;
-  if(wantScrollToday){wantScrollToday=false;const tr=rows.querySelector('.row.today');rows.scrollTop=tr?Math.max(0,tr.offsetTop-rows.offsetTop-tr.offsetHeight*3):0}
+  if(scrollKey||wantScrollToday){const tr=scrollKey?rows.querySelector(`.row[data-d="${scrollKey}"]`):rows.querySelector('.row.today');wantScrollToday=false;scrollKey=null;rows.scrollTop=tr?Math.max(0,tr.offsetTop-rows.offsetTop-tr.offsetHeight*3):0}
 }
 
 /* row interactions: tap day = check-in, tap cell = day detail, long-press/right-click = add */
@@ -775,6 +803,22 @@ function repeatPicker(rep,cnt,cb){
     s.querySelector('#rpSave').onclick=()=>{const raw=s.querySelector('#rpN').value.replace(/\D/g,'');closeSheet();cb(r,r==='none'||!raw?'':String(Math.max(1,parseInt(raw,10))))};
   });
 }
+function quickNumber(anchor,value,min,max,cb){
+  const wrap=document.createElement('div');wrap.className='qn-wrap';
+  wrap.innerHTML=`<div class="qn"><span class="qp">#</span><input inputmode="numeric" maxlength="3" autocomplete="off" value="${value}"><button class="qx" title="cancelar">${SVG_X}</button><button class="qok" title="confirmar">${SVG_CHECK}</button></div>`;
+  document.body.appendChild(wrap);
+  const pill=wrap.firstElementChild,inp=pill.querySelector('input'),r=anchor.getBoundingClientRect();
+  let top=Math.max(10,r.top+r.height/2-41);
+  const place=()=>{const vh=window.visualViewport?window.visualViewport.height:window.innerHeight;pill.style.top=Math.max(10,Math.min(top,vh-pill.offsetHeight-12))+'px'};
+  place();const vv=window.visualViewport;if(vv)vv.addEventListener('resize',place);
+  const close=()=>{if(vv)vv.removeEventListener('resize',place);wrap.remove()};
+  const ok=()=>{const n=parseInt(inp.value.replace(/\D/g,''),10);if(!(n>=min&&n<=max))return toast(`digite de ${min} a ${max}`);close();cb(n)};
+  inp.oninput=()=>{inp.value=inp.value.replace(/\D/g,'')};
+  inp.onkeydown=e=>{if(e.key==='Enter')ok();if(e.key==='Escape')close()};
+  pill.querySelector('.qok').onclick=ok;pill.querySelector('.qx').onclick=close;
+  wrap.addEventListener('click',e=>{if(e.target===wrap)close()});
+  setTimeout(()=>{inp.focus();inp.select()},60);
+}
 function openForm(o){
   const edit=o.edit||null,s=edit?db.series[edit.sid]:null;
   let type=edit?edit.type:(o.type||'diario');
@@ -837,7 +881,7 @@ function openForm(o){
     $$('#untilRow').onclick=()=>optionSheet('até quando',[{v:'forever',label:'a perder de vista',action:true},{v:'count',label:'número de repetições',action:true}],until,v=>{until=v;upd()});
     $$('#cMinus').onclick=()=>{if(cnt>2){cnt--;upd()}};
     $$('#cPlus').onclick=()=>{if(cnt<999){cnt++;upd()}};
-    $$('#cntMain').onclick=async()=>{const v=await promptDialog(rep==='parc'?'número de parcelas':'número de repetições','quantas vezes? (mínimo 2)',String(cnt),'numeric');const n=parseInt(v,10);if(n>=2&&n<=999){cnt=n;upd()}};
+    $$('#cntMain').onclick=()=>quickNumber($$('#cntRow'),cnt,2,999,n=>{cnt=n;upd()});
     $$('#rowTag').onclick=()=>tagPicker(selTags,ids=>{selTags=ids;upd()});
     $$('#cardWrap').onclick=()=>optionSheet('cartão',[...live(db.cards).map(c=>({v:c.id,label:esc(c.name),sub:(c.close?`fecha dia ${c.close} · `:'')+`vence dia ${c.due}`,icon:ic('cartao','lg')})),{v:'__new',label:'+ adicionar cartão',action:true}],card,async v=>{
       if(v==='__new'){const c=await cardDialog(null);if(c&&c.id)card=c.id}else card=v;fatApplied=false;upd()});
@@ -940,25 +984,27 @@ function maskMoney(el,allowNeg,bare){
 }
 
 /* ---------- horizonte ---------- */
+function hzCls(v){const g=+db.settings.greenFrom||1000;return v< -(g/2)?'neg2':v<-0.004?'neg':v<g?'mid':v>=g*5?'pos2':'pos'}
+function hzFmt(v){const a=Math.abs(v);if(a>=10000)return Math.round(v/1000)+'k';if(a>=1000)return (Math.round(v/100)/10)+'k';if(a>=100)return String(Math.round(v));const x=Math.round(v*10)/10;return String(x===0?0:x)}
 function openHorizon(){
   const c=compute(),tp=parseD(c.today),months=[];
   for(let i=0;i<12;i++)months.push(addMonths(tp.y,tp.m,i));
-  let h=`<header class="top"><div><h3 style="margin:0">horizonte de saldos</h3><div class="mut small">próximos 12 meses · toque no mês para abrir</div></div><button class="x" id="hzClose">×</button></header><div class="hz"><table><thead><tr><th class="d">dia</th>${months.map((a,i)=>`<th data-i="${i}">${MESES[a.m-1]}/${String(a.y).slice(2)}</th>`).join('')}</tr></thead><tbody>`;
-  for(let d=1;d<=31;d++){
-    h+=`<tr><td class="d">${d}</td>`;
-    for(const a of months){
-      if(d>dim(a.y,a.m)){h+='<td></td>';continue}
-      const k=ds(a.y,a.m,d),b=(c.days[k]||emptyDay).bal;
-      h+=`<td class="${k===c.today?'t':''}"><span class="${balCls(b)}">${compact(b)}</span></td>`;
+  const g=+db.settings.greenFrom||1000;
+  let cols='';
+  months.forEach((a,i)=>{
+    let r=`<button class="hzh ${i===0?'cur':''}" data-mi="${i}">${MESES[a.m-1]}/${String(a.y).slice(2)}</button>`;
+    for(let d=1;d<=31;d++){
+      if(d>dim(a.y,a.m)){r+='<div class="hzr empty"><div class="d"></div><div class="v"></div></div>';continue}
+      const k=ds(a.y,a.m,d),b=(c.days[k]||emptyDay).bal,wd=toDate(k).getDay();
+      r+=`<button class="hzr" data-k="${k}"><span class="d ${k===c.today?'td':(wd===0||wd===6?'we':'')}">${d}</span><span class="v ${hzCls(b)}">${hzFmt(b)}</span></button>`;
     }
-    h+='</tr>';
-  }
-  const mins=months.map(a=>{let mn=Infinity;for(let d=1;d<=dim(a.y,a.m);d++)mn=Math.min(mn,(c.days[ds(a.y,a.m,d)]||emptyDay).bal);return mn});
-  h+=`</tbody><tfoot><tr><td class="d">mín</td>${mins.map(v=>`<td><span class="${balCls(v)}">${compact(v)}</span></td>`).join('')}</tr><tr><td class="d">fim</td>${months.map(a=>{const v=(c.days[ds(a.y,a.m,dim(a.y,a.m))]||emptyDay).bal;return `<td><span class="${balCls(v)}">${compact(v)}</span></td>`}).join('')}</tr></tfoot></table></div>
-  <p class="mut small pad">verde = acima de ${money(+db.settings.greenFrom||0)} · amarelo = positivo, mas abaixo disso · vermelho = negativo. se o vermelho piora mês a mês, você está gastando mais do que ganha. se está tudo verde, o menor saldo do mês é quanto dá para economizar.</p>`;
-  const o=$('#horizon');o.innerHTML=h;o.classList.add('on');
-  o.querySelector('#hzClose').onclick=()=>o.classList.remove('on');
-  o.querySelectorAll('th[data-i]').forEach(th=>th.onclick=()=>{const a=months[+th.dataset.i];view={y:a.y,m:a.m};o.classList.remove('on');setTab('saldos');render()});
+    cols+=`<div class="hzc">${r}</div>`;
+  });
+  openPage({key:'hz',title:'horizonte de saldos',actions:[{icon:SVG_PLUS,title:'adicionar movimentação',on:()=>chooseType('adicionar',t=>openForm({date:todayStr(),type:t}))}],
+    body:`<div class="hzw">${cols}</div>`,},pg=>{
+    pg.querySelectorAll('.hzr[data-k]').forEach(b=>b.onclick=()=>{const p=parseD(b.dataset.k);view={y:p.y,m:p.m};scrollKey=b.dataset.k;back();setTab('saldos')});
+    pg.querySelectorAll('.hzh[data-mi]').forEach(b=>b.onclick=()=>{const a=months[+b.dataset.mi];view={y:a.y,m:a.m};scrollKey=null;wantScrollToday=true;back();setTab('saldos')});
+  });
 }
 $('#btnHorizon').onclick=openHorizon;
 
