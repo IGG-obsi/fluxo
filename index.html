@@ -134,7 +134,76 @@ details.tag summary::-webkit-details-marker{display:none}
 .guide p{margin-bottom:12px;line-height:1.55;color:#d6d8dc}
 .guide b{color:#fff}
 .status{font-size:13px;padding:10px 12px;border-radius:10px;background:var(--bg3);margin:10px 0}
-@media (min-width:900px){#app{max-width:680px}}
+
+.side,.brand,.plt{display:none}
+#view-totais{padding-bottom:24px}
+.row.wide,.colhead.wide{grid-template-columns:64px repeat(5,minmax(0,1fr)) minmax(0,1.3fr)}
+.row.wide{height:46px}
+.row.wide .vcell{justify-content:flex-end;font-size:15px;border-right:1px solid var(--line);padding:0 10px}
+.row.wide .scell{font-size:16px}
+.colhead.wide .ch{display:flex;gap:6px;align-items:center;justify-content:flex-end;padding-right:10px;font-size:13px;color:var(--mut)}
+.colhead.wide .ch .ic{width:20px;height:20px;font-size:11px}
+.sec{padding:26px 18px 14px;color:var(--mut);font-size:17px;font-weight:600;border-bottom:1px solid var(--line)}
+.calc{display:flex;justify-content:space-between;align-items:center;width:100%;padding:18px;border-bottom:1px solid var(--line);text-align:left;gap:10px}
+.calc .ct{font-size:19px;font-weight:700;margin-bottom:8px}
+.fx{display:flex;align-items:center;gap:3px}
+.fx .ic{width:22px;height:22px;font-size:12px}
+.op{color:var(--mut);font-size:14px;margin:0 1px}
+.cv{text-align:right;font-size:19px;white-space:nowrap}
+.cs{font-size:14px;color:var(--mut);margin-top:6px;display:flex;align-items:center;gap:6px;justify-content:flex-end}
+.cs .ic{width:20px;height:20px;font-size:11px}
+.pbar{width:90px;height:16px;border:2px solid #3fa34d;border-radius:10px;overflow:hidden;display:inline-block;margin:0 4px}
+.pbar i{display:block;height:100%;background:#3fa34d}
+.mrow{display:flex;align-items:center;gap:12px;width:100%;padding:17px 18px;border-bottom:1px solid var(--line);font-size:17px;text-align:left}
+.mrow .grow{flex:1;font-weight:600}
+.ic.pj{background:transparent!important;border:2px dashed var(--c-diario);color:var(--c-diario)}
+.tghead{display:flex;align-items:center;gap:6px;padding:10px 12px 10px 18px;border-bottom:1px solid var(--line);color:var(--mut);font-size:17px;font-weight:600}
+.tghead span{flex:1}
+.tghead button{width:44px;height:44px;display:flex;align-items:center;justify-content:center;color:var(--txt)}
+.tghead svg,.ecirc svg{width:26px;height:26px}
+.tgsearch{display:flex;align-items:center;gap:10px;padding:4px 18px;border-bottom:1px solid var(--line);color:var(--mut)}
+.tgsearch svg{width:22px;height:22px;flex-shrink:0}
+.tgsearch input{border:0;background:transparent;padding:14px 0}
+.empty{display:flex;flex-direction:column;align-items:center;gap:22px;padding:80px 30px;text-align:center;color:var(--mut);line-height:1.5}
+.ecirc{width:100px;height:100px;border-radius:50%;border:2px solid var(--line);display:flex;align-items:center;justify-content:center}
+details.tag{padding:0 18px}
+.lnk{color:var(--acc);font-weight:700;text-decoration:underline;font-size:12px}
+.ptot{background:var(--bg3);border-radius:14px;padding:14px 16px;margin-top:16px}
+.ptot .pr{display:flex;justify-content:space-between;align-items:center;padding:6px 0;font-weight:600}
+.ptot select{width:auto;padding:8px 10px}
+.ptot .big{border-top:1px solid var(--line);margin-top:8px;padding-top:12px}
+.ptot .big b{font-size:28px}
+.cnt{text-align:right;font-size:12px;color:var(--mut);margin:-6px 0 10px}
+.ct2{font-weight:700;margin-bottom:4px}
+.tcolors{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:10px 0 18px}
+.tcolors button{padding:15px 16px;border-radius:10px;text-align:left;font-weight:700;display:flex;justify-content:space-between;border:2px solid transparent;color:#fff}
+.tcolors button .ok{visibility:hidden}.tcolors button.on{border-color:#ddd}.tcolors button.on .ok{visibility:visible}
+.adv{border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:14px 0;margin-bottom:14px}
+.adv summary{list-style:none;cursor:pointer;display:flex;flex-direction:column;gap:4px}
+.adv summary::-webkit-details-marker{display:none}
+.chk{display:flex;gap:10px;align-items:center;padding:10px 0;font-size:15px;cursor:pointer}
+.chk input{width:20px;height:20px;padding:0;accent-color:var(--acc);flex-shrink:0}
+@media (min-width:1000px){
+  #app{max-width:none;display:grid;grid-template-columns:220px minmax(0,1fr);grid-template-rows:auto minmax(0,1fr);grid-template-areas:"nav top" "nav main";border:0}
+  header.top{grid-area:top}
+  main{grid-area:main}
+  nav.bottom{grid-area:nav;display:flex;flex-direction:column;border-top:0;border-right:1px solid var(--line);padding:18px 12px;gap:4px}
+  nav.bottom .brand{display:block;order:-2;font-size:22px;font-weight:800;padding:6px 14px 18px}
+  nav.bottom button{flex-direction:row;gap:12px;padding:12px 14px;border-radius:10px;border-top:0;font-size:16px;justify-content:flex-start}
+  nav.bottom button.on{background:var(--bg3)}
+  nav.bottom button svg{width:22px;height:22px}
+  nav.bottom .plus{order:-1;width:100%;height:auto;border-radius:12px;font-size:16px;font-weight:700;padding:13px;margin-bottom:14px;justify-content:center;gap:8px;white-space:nowrap}
+  nav.bottom .plus .plt{display:inline}
+  .sheet-wrap{align-items:center}
+  .sheet{max-width:560px;border-radius:20px;max-height:86vh}
+  #toast{bottom:40px}
+  .view .pad,#view-tags,#view-menu{max-width:760px}
+}
+@media (min-width:1400px){
+  #app{grid-template-columns:220px minmax(0,1fr) 400px;grid-template-areas:"nav top side" "nav main side"}
+  .side{display:block;grid-area:side;border-left:1px solid var(--line);overflow:auto}
+  nav.bottom [data-tab=totais]{display:none}
+}
 </style>
 </head>
 <body>
@@ -146,17 +215,19 @@ details.tag summary::-webkit-details-marker{display:none}
   </header>
   <main>
     <section id="view-saldos" class="view active">
-      <div class="colhead"><span>dia</span><button id="filterBtn" class="pill"></button><span>saldos</span></div>
+      <div class="colhead" id="colhead"></div>
       <div id="rows" class="rows"></div>
     </section>
     <section id="view-totais" class="view"></section>
     <section id="view-tags" class="view"></section>
     <section id="view-menu" class="view"></section>
   </main>
+  <aside class="side" id="side"></aside>
   <nav class="bottom">
+    <div class="brand">Fluxo</div>
     <button data-tab="saldos" class="on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="16"/><path d="M3 9h18M3 14h18M9 4v16"/></svg>saldos</button>
     <button data-tab="totais"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 7h7M7.5 3.5v7M14 4l6 6M20 4l-6 6M4 17h7M14 15h6M14 19h6"/></svg>totais</button>
-    <button class="plus" id="btnPlus" aria-label="adicionar">+</button>
+    <button class="plus" id="btnPlus" aria-label="adicionar"><span>+</span><span class="plt">nova movimentação</span></button>
     <button data-tab="tags"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 6h10l3 4-3 4H7z"/><path d="M4 9v9h11"/></svg>tags</button>
     <button data-tab="menu"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 6h14M5 10h14M5 14h14M5 18h14"/></svg>menu</button>
   </nav>
@@ -173,7 +244,7 @@ const MESES=['jan','fev','mar','abr','mai','jun','jul','ago','set','out','nov','
 const MESES_L=['janeiro','fevereiro','março','abril','maio','junho','julho','agosto','setembro','outubro','novembro','dezembro'];
 const SEM=['dom','seg','ter','qua','qui','sex','sáb'];
 const DB_KEY='fluxo-db-v1',UI_KEY='fluxo-ui',SYNC_KEY='fluxo-sync',DIRTY_KEY='fluxo-dirty';
-const TAG_COLORS=['#4f8cff','#e5541e','#e0287a','#8bd41f','#7c4dff','#f5b400','#20b2aa','#9aa0a6'];
+const TAG_COLORS=[['cinza','#5a5d63'],['azul','#3d5f8f'],['amarelo','#6e5a1c'],['verde','#3d7b67'],['vermelho','#9a3b3b'],['roxo','#5c4a86'],['rosa','#8a4a62'],['marrom','#6b5034']];
 
 /* ---------- storage ---------- */
 const mem={};
@@ -258,7 +329,9 @@ function occ(s,from,to){
   }
   return out;
 }
-const dailyProj=()=>live(db.prev).reduce((a,p)=>a+(+p.amount||0),0)/(+db.settings.divisor||30);
+const prevTotal=()=>live(db.prev).reduce((a,p)=>a+(+p.amount||0),0);
+function divFor(dstr){const dv=db.settings.divisor;if(dv==='mes'){const p=parseD(dstr||todayStr());return dim(p.y,p.m)}return +dv||30}
+const dailyProj=dstr=>prevTotal()/divFor(dstr);
 
 /* ---------- engine ---------- */
 let view=(()=>{const p=parseD(todayStr());return {y:p.y,m:p.m}})();
@@ -281,35 +354,37 @@ function compute(){
       (items[d]||(items[d]=[])).push({sid:s.id,date:d,idx:i,type:s.type,amount:+pick('amount')||0,desc:pick('desc')||'',tag:pick('tag')||'',card:pick('card')||'',rec:!!(s.rep&&s.rep!=='none')});
     }
   }
-  const proj=dailyProj();
-  const days={};let bal=0,started=false;
+  const pt=prevTotal();
+  const tagFlag=(id,k)=>{const t=id&&db.tags[id];return !!(t&&!t.del&&t[k])};
+  const z=()=>({entrada:0,saida:0,diario:0,economia:0,cartao:0});
+  const days={};let bal=0,started=false;const proj=pt/divFor(today);
   for(let d=from;d<=to;d=addDays(d,1)){
     const list=items[d]||[];
-    const sums={entrada:0,saida:0,diario:0,economia:0,cartao:0};
-    for(const it of list)sums[it.type]+=it.amount;
-    const projD=d>today&&proj>0?proj:0;
-    sums.diario+=projD;
+    const sums=z(),bs=z(),ts=z();
+    for(const it of list){sums[it.type]+=it.amount;if(!tagFlag(it.tag,'noSaldo'))bs[it.type]+=it.amount;if(!tagFlag(it.tag,'noTot'))ts[it.type]+=it.amount}
+    const projD=d>today&&pt>0?pt/divFor(d):0;
+    sums.diario+=projD;bs.diario+=projD;ts.diario+=projD;
     if(list.length||projD)started=true;
-    bal+=sums.entrada-sums.saida-sums.diario-sums.economia-sums.cartao;
-    days[d]={sums,list,projD,bal:started?bal:0};
+    bal+=bs.entrada-bs.saida-bs.diario-bs.economia-bs.cartao;
+    days[d]={sums,ts,list,projD,bal:started?bal:0};
   }
   cache={today,from,to,days,items,proj};
   return cache;
 }
-const emptyDay={sums:{entrada:0,saida:0,diario:0,economia:0,cartao:0},list:[],projD:0,bal:0};
+const emptyDay={sums:{entrada:0,saida:0,diario:0,economia:0,cartao:0},ts:{entrada:0,saida:0,diario:0,economia:0,cartao:0},list:[],projD:0,bal:0};
 const dayOf=k=>compute().days[k]||emptyDay;
 const balCls=v=>v<-0.004?'neg':(v>=(+db.settings.greenFrom||0)?'pos':'mid');
 
 function monthTotals(y,m){
   const c=compute(),today=c.today,n=dim(y,m);
-  const t={entrada:0,saida:0,diario:0,economia:0,cartao:0,dReal:0,dPast:0,dProj:0,elapsed:0,byCard:{}};
+  const t={entrada:0,saida:0,diario:0,economia:0,cartao:0,dReal:0,dPast:0,dProj:0,projDays:0,elapsed:0,byCard:{}};
   for(let d=1;d<=n;d++){
     const k=ds(y,m,d),day=c.days[k];
     if(k<=today)t.elapsed++;
     if(!day)continue;
-    for(const tk of TYPE_KEYS)t[tk]+=day.sums[tk];
-    t.dProj+=day.projD;
-    const real=day.sums.diario-day.projD;t.dReal+=real;if(k<=today)t.dPast+=real;
+    for(const tk of TYPE_KEYS)t[tk]+=day.ts[tk];
+    t.dProj+=day.projD;if(day.projD>0)t.projDays++;
+    const real=day.ts.diario-day.projD;t.dReal+=real;if(k<=today)t.dPast+=real;
     for(const it of day.list)if(it.type==='cartao'){t.byCard[it.card]=(t.byCard[it.card]||0)+it.amount}
   }
   t.perf=t.entrada-t.saida-t.diario-t.economia-t.cartao;
@@ -317,6 +392,7 @@ function monthTotals(y,m){
   t.pct=t.entrada>0?t.economia/t.entrada:0;
   t.end=(c.days[ds(y,m,n)]||emptyDay).bal;
   t.avg=t.elapsed?t.dPast/t.elapsed:0;
+  t.meta=dailyProj(ds(y,m,1));
   return t;
 }
 
@@ -340,7 +416,7 @@ function promptDialog(title,label,value,mode){
     const d=$('#dlg');
     d.innerHTML=`<h3>${title}</h3><label class="f">${label}<input id="pIn" inputmode="${mode||'text'}" value="${esc(value||'')}"></label><div class="actions"><button class="btn" id="pNo">cancelar</button><button class="btn primary" id="pOk">ok</button></div>`;
     $('#dlgWrap').classList.add('on');
-    const inp=$('#pIn');setTimeout(()=>inp.focus(),50);
+    const inp=$('#pIn');if(mode==='decimal')maskMoney(inp,true);setTimeout(()=>inp.focus(),50);
     const done=v=>{$('#dlgWrap').classList.remove('on');res(v)};
     $('#pNo').onclick=()=>done(null);$('#pOk').onclick=()=>done(inp.value);
     inp.onkeydown=e=>{if(e.key==='Enter')done(inp.value)};
@@ -360,62 +436,72 @@ function renderHeader(){
 
 /* ---------- render: saldos ---------- */
 let wantScrollToday=true;
+const isWide=()=>window.matchMedia('(min-width:1000px)').matches;
+const isSide=()=>window.matchMedia('(min-width:1400px)').matches;
+const SHORT={entrada:'entradas',saida:'saídas',diario:'diários',economia:'economias',cartao:'cartão'};
 function renderRows(){
-  const c=compute(),today=c.today,n=dim(view.y,view.m),f=ui.filter;
-  $('#filterBtn').innerHTML=`${ic(f)}<span>${fLabel(f)}</span><span class="chev">▾</span>`;
+  const c=compute(),today=c.today,n=dim(view.y,view.m),f=ui.filter,wide=isWide();
+  const ch=$('#colhead');ch.classList.toggle('wide',wide);
+  if(wide)ch.innerHTML=`<span>dia</span>${TYPE_KEYS.map(t=>`<span class="ch">${ic(t)}${SHORT[t]}</span>`).join('')}<span class="ch" style="padding-right:14px">saldo</span>`;
+  else{ch.innerHTML=`<span>dia</span><button id="filterBtn" class="pill">${ic(f)}<span>${fLabel(f)}</span><span class="chev">▾</span></button><span>saldos</span>`;$('#filterBtn').onclick=openFilter}
   let h='';
   for(let d=1;d<=n;d++){
     const k=ds(view.y,view.m,d),day=dayOf(k);
     const chk=db.checks[k]&&db.checks[k].v;
     const cls=k===today?'today':(k>today?'future':'past');
+    const projOnly=day.projD>0&&!day.list.some(it=>it.type==='diario');
     let cell;
-    if(f==='todas'){
+    if(wide){
+      cell=TYPE_KEYS.map(t=>{const v=day.sums[t];return `<div class="vcell ${v>0?'':'zero'} ${t==='diario'&&projOnly?'proj':''}" data-t="${t}"><span class="val">${v>0?money(v):'–'}</span></div>`}).join('');
+    }else if(f==='todas'){
       const net=day.sums.entrada-day.sums.saida-day.sums.diario-day.sums.economia-day.sums.cartao;
       const present=TYPE_KEYS.filter(t=>day.sums[t]>0);
       cell=`<div class="vcell ${present.length?'':'zero'}"><span class="dots">${present.map(t=>`<i style="background:${TYPES[t].color}"></i>`).join('')||ic('todas')}</span><span class="val">${money(net)}</span></div>`;
     }else{
       const v=day.sums[f];
-      const proj=f==='diario'&&day.projD>0&&!day.list.some(it=>it.type==='diario');
-      cell=`<div class="vcell ${v>0?'':'zero'} ${proj?'proj':''}">${ic(f)}<span class="val">${money(v)}</span></div>`;
+      cell=`<div class="vcell ${v>0?'':'zero'} ${f==='diario'&&projOnly?'proj':''}">${ic(f)}<span class="val">${money(v)}</span></div>`;
     }
-    h+=`<div class="row ${cls}" data-d="${k}"><button class="dcell ${chk?'chk':''}">${d}</button>${cell}<div class="scell ${balCls(day.bal)}">${money(day.bal)}</div></div>`;
+    h+=`<div class="row ${cls} ${wide?'wide':''}" data-d="${k}"><button class="dcell ${chk?'chk':''}">${d}</button>${cell}<div class="scell ${balCls(day.bal)}">${money(day.bal)}</div></div>`;
   }
   const rows=$('#rows');rows.innerHTML=h;
-  if(wantScrollToday){wantScrollToday=false;const tr=rows.querySelector('.row.today');rows.scrollTop=tr?Math.max(0,tr.offsetTop-rows.offsetTop-54*3):0}
+  if(wantScrollToday){wantScrollToday=false;const tr=rows.querySelector('.row.today');rows.scrollTop=tr?Math.max(0,tr.offsetTop-rows.offsetTop-tr.offsetHeight*3):0}
 }
 
 /* row interactions: tap day = check-in, tap cell = day detail, long-press/right-click = add */
 (function(){
   const rows=$('#rows');let lp={t:null,x:0,y:0,fired:false,touch:false};let sw=null;
+  const typeOf=cell=>cell&&cell.dataset.t?cell.dataset.t:(ui.filter==='todas'?'diario':ui.filter);
   rows.addEventListener('pointerdown',e=>{
     lp.touch=e.pointerType!=='mouse';lp.fired=false;
     if(e.button!==0)return;
     const cell=e.target.closest('.vcell,.scell');if(!cell)return;
-    lp.fired=false;lp.x=e.clientX;lp.y=e.clientY;clearTimeout(lp.t);
-    lp.t=setTimeout(()=>{lp.t=null;lp.fired=true;if(navigator.vibrate)navigator.vibrate(15);openForm({date:cell.parentNode.dataset.d,type:ui.filter==='todas'?'diario':ui.filter})},480);
+    lp.x=e.clientX;lp.y=e.clientY;clearTimeout(lp.t);
+    lp.t=setTimeout(()=>{lp.t=null;lp.fired=true;if(navigator.vibrate)navigator.vibrate(15);openForm({date:cell.parentNode.dataset.d,type:typeOf(cell)})},480);
   });
   rows.addEventListener('pointermove',e=>{if(lp.t&&(Math.abs(e.clientX-lp.x)>10||Math.abs(e.clientY-lp.y)>10)){clearTimeout(lp.t);lp.t=null}});
   ['pointerup','pointercancel','pointerleave'].forEach(ev=>rows.addEventListener(ev,()=>{clearTimeout(lp.t);lp.t=null}));
   rows.addEventListener('click',e=>{
     if(lp.fired){lp.fired=false;return}
     const row=e.target.closest('.row');if(!row)return;
-    if(e.target.closest('.dcell'))toggleCheck(row.dataset.d);else openDay(row.dataset.d);
+    if(e.target.closest('.dcell'))return toggleCheck(row.dataset.d);
+    const vc=e.target.closest('.vcell');
+    openDay(row.dataset.d,vc&&vc.dataset.t?vc.dataset.t:(isWide()?'todas':ui.filter));
   });
-  rows.addEventListener('contextmenu',e=>{e.preventDefault();if(lp.touch)return;const row=e.target.closest('.row');if(row&&!e.target.closest('.dcell'))openForm({date:row.dataset.d,type:ui.filter==='todas'?'diario':ui.filter})});
+  rows.addEventListener('contextmenu',e=>{e.preventDefault();if(lp.touch)return;const row=e.target.closest('.row'),cell=e.target.closest('.vcell,.scell');if(row&&cell)openForm({date:row.dataset.d,type:typeOf(cell)})});
   rows.addEventListener('touchstart',e=>{const t=e.touches[0];sw={x:t.clientX,y:t.clientY}},{passive:true});
   rows.addEventListener('touchend',e=>{
-    if(!sw)return;const t=e.changedTouches[0],dx=t.clientX-sw.x,dy=t.clientY-sw.y;sw=null;
+    if(!sw||isWide())return;const t=e.changedTouches[0],dx=t.clientX-sw.x,dy=t.clientY-sw.y;sw=null;
     if(Math.abs(dx)>70&&Math.abs(dy)<45){clearTimeout(lp.t);lp.t=null;const i=FILTERS.indexOf(ui.filter);ui.filter=FILTERS[(i+(dx<0?1:-1)+FILTERS.length)%FILTERS.length];saveUI();renderRows()}
   },{passive:true});
 })();
 
 function toggleCheck(k){const cur=db.checks[k]&&db.checks[k].v;db.checks[k]={v:!cur,u:now()};save();renderRows();if(!cur)toast(`check-in de ${niceDate(k)} ✓`)}
 
-$('#filterBtn').onclick=()=>{
+function openFilter(){
   openSheet(shead('mostrar')+FILTERS.map(f=>`<button class="opt ${f===ui.filter?'on':''}" data-f="${f}">${ic(f,'lg')}${fLabel(f)}</button>`).join(''),s=>{
     s.querySelectorAll('[data-f]').forEach(b=>b.onclick=()=>{ui.filter=b.dataset.f;saveUI();closeSheet();renderRows()});
   });
-};
+}
 
 /* ---------- day detail ---------- */
 function itemRow(it){
@@ -425,8 +511,8 @@ function itemRow(it){
   return `<button class="li" data-sid="${it.sid}" data-date="${it.date}">${ic(it.type,'lg')}<div class="grow"><div class="t">${esc(it.desc||TYPES[it.type].one)}${it.rec?' <span class="mut">↻</span>':''}</div><div class="sub">${tag?`<span class="chip" style="background:${tag.color}">${esc(tag.name)}</span>`:''}${card?esc(card)+' · ':''}${niceDate(it.date)}</div></div><span class="amt">${sign} ${money(it.amount)}</span></button>`;
 }
 function bindItems(root){root.querySelectorAll('.li[data-sid]').forEach(b=>b.onclick=()=>{const it=(compute().items[b.dataset.date]||[]).find(x=>x.sid===b.dataset.sid);if(it)openForm({edit:it})})}
-function openDay(k){
-  const day=dayOf(k),f=ui.filter,types=f==='todas'?TYPE_KEYS:[f],today=todayStr();
+function openDay(k,f){
+  f=f||ui.filter;const day=dayOf(k),types=f==='todas'?TYPE_KEYS:[f],today=todayStr();
   const list=day.list.filter(it=>types.includes(it.type));
   let h=shead(niceDate(k))+`<p class="mut small" style="margin:-8px 0 12px">${fLabel(f)} · saldo do dia <b style="color:#fff">${money(day.bal)}</b></p><div class="list">`;
   h+=list.map(itemRow).join('');
@@ -464,19 +550,34 @@ function openForm(o){
   <label class="f">valor<input id="fAmt" inputmode="decimal" placeholder="0,00" value="${edit?numStr(edit.amount):''}"></label>
   <label class="f">descrição<input id="fDesc" placeholder="ex.: mercado, aluguel, salário" value="${esc(edit?edit.desc:'')}"></label>
   <label class="f" id="fDateL">data<input id="fDate" type="date" value="${edit?edit.date:(o.date||todayStr())}"></label>
-  <p class="hint" id="cardHint">lance no <b>dia de vencimento da fatura</b>. compra parcelada: repetir todo mês + nº de parcelas.</p>
-  <label class="f" id="cardWrap">cartão<select id="fCard"><option value="">—</option>${cards.map(c=>`<option value="${c.id}" ${edit&&edit.card===c.id?'selected':''}>${esc(c.name)} (vence dia ${c.due})</option>`).join('')}<option value="__new">+ cadastrar cartão…</option></select></label>
+  <p class="hint" id="cardHint">escolha o cartão e a data da compra: o app mostra em qual fatura ela cai. parcelado: repetir todo mês + nº de parcelas.</p>
+  <label class="f" id="cardWrap">cartão<select id="fCard"><option value="">—</option>${cards.map(c=>`<option value="${c.id}" ${edit&&edit.card===c.id?'selected':''}>${esc(cardLbl(c))}</option>`).join('')}<option value="__new">+ cadastrar cartão…</option></select></label>
+  <p class="hint" id="fatHint"></p>
   <label class="f">tag<select id="fTag"><option value="">sem tag</option>${tags.map(t=>`<option value="${t.id}" ${edit&&edit.tag===t.id?'selected':''}>${esc(t.name)}</option>`).join('')}<option value="__new">+ nova tag…</option></select></label>
   <div class="two"><label class="f">repetir<select id="fRep">${[['none','não repete'],['day','todo dia'],['week','toda semana'],['month','todo mês']].map(([v,l])=>`<option value="${v}" ${v===rep0?'selected':''}>${l}</option>`).join('')}</select></label>
   <label class="f" id="cntWrap">quantas vezes<input id="fCnt" inputmode="numeric" placeholder="sempre" value="${cnt0}"></label></div>
   <div class="actions">${edit?'<button class="btn danger" id="fDel">apagar</button>':''}<button class="btn primary" id="fSave">salvar</button></div>`;
   openSheet(h,sh=>{
-    const upd=()=>{sh.querySelector('#cardWrap').style.display=type==='cartao'?'':'none';sh.querySelector('#cardHint').style.display=type==='cartao'?'':'none';sh.querySelector('#cntWrap').style.visibility=sh.querySelector('#fRep').value==='none'?'hidden':'visible'};
+    let fatApplied=false;const fatHint=sh.querySelector('#fatHint');
+    function updFat(){
+      const c=db.cards[sh.querySelector('#fCard').value];
+      if(type!=='cartao'||!c||c.del){fatHint.style.display='none';return}
+      fatHint.style.display='';
+      const dt=sh.querySelector('#fDate').value||todayStr();
+      if(fatApplied){fatHint.innerHTML=`✓ lançado na fatura do ${esc(c.name)} que vence <b>${br(dt)}</b>`;return}
+      const due=faturaDue(c,dt);
+      if(due===dt){fatHint.innerHTML=`✓ data = vencimento da fatura do ${esc(c.name)}`;return}
+      fatHint.innerHTML=`compra em ${br(dt)} cai na fatura que vence <b>${br(due)}</b>. <button class="lnk" id="fatUse">lançar nessa fatura</button>`;
+      fatHint.querySelector('#fatUse').onclick=()=>{sh.querySelector('#fDate').value=due;fatApplied=true;updFat()};
+    }
+    const upd=()=>{sh.querySelector('#cardWrap').style.display=type==='cartao'?'':'none';sh.querySelector('#cardHint').style.display=type==='cartao'?'':'none';sh.querySelector('#cntWrap').style.visibility=sh.querySelector('#fRep').value==='none'?'hidden':'visible';updFat()};
+    sh.querySelector('#fDate').addEventListener('change',()=>{fatApplied=false;updFat()});
+    maskMoney(sh.querySelector('#fAmt'));
     sh.querySelectorAll('.seg button').forEach(b=>b.onclick=()=>{type=b.dataset.t;sh.querySelectorAll('.seg button').forEach(x=>x.classList.toggle('on',x===b));upd()});
     sh.querySelector('#fRep').onchange=upd;upd();
     if(!edit)setTimeout(()=>sh.querySelector('#fAmt').focus(),80);
-    sh.querySelector('#fTag').onchange=async e=>{if(e.target.value!=='__new')return;const n=await promptDialog('nova tag','nome da tag','');if(!n||!n.trim()){e.target.value='';return}const id=uid();db.tags[id]={id,name:n.trim(),color:TAG_COLORS[live(db.tags).length%TAG_COLORS.length],u:now()};save();const op=document.createElement('option');op.value=id;op.textContent=n.trim();e.target.insertBefore(op,e.target.lastElementChild);e.target.value=id};
-    sh.querySelector('#fCard').onchange=async e=>{if(e.target.value!=='__new')return;const c=await newCardDialog();if(!c){e.target.value='';return}const op=document.createElement('option');op.value=c.id;op.textContent=`${c.name} (vence dia ${c.due})`;e.target.insertBefore(op,e.target.lastElementChild);e.target.value=c.id};
+    sh.querySelector('#fTag').onchange=async e=>{if(e.target.value!=='__new')return;const n=await promptDialog('nova tag','nome da tag','');if(!n||!n.trim()){e.target.value='';return}const id=uid();db.tags[id]={id,name:n.trim(),color:TAG_COLORS[live(db.tags).length%TAG_COLORS.length][1],u:now()};save();const op=document.createElement('option');op.value=id;op.textContent=n.trim();e.target.insertBefore(op,e.target.lastElementChild);e.target.value=id};
+    sh.querySelector('#fCard').onchange=async e=>{fatApplied=false;if(e.target.value!=='__new')return updFat();const c=await cardDialog(null);if(!c){e.target.value='';return updFat()}const op=document.createElement('option');op.value=c.id;op.textContent=cardLbl(c);e.target.insertBefore(op,e.target.lastElementChild);e.target.value=c.id;updFat()};
     sh.querySelector('#fSave').onclick=async()=>{
       const amount=parseMoney(sh.querySelector('#fAmt').value);
       if(!isFinite(amount)||amount<=0)return toast('informe um valor');
@@ -532,11 +633,40 @@ function applyEdit(scope,s,edit,v){
   if(shift){s.start=addDays(s.start,shift);s.exc={}}
   if(s.exc)for(const d of Object.keys(s.exc))if(!s.exc[d].del)delete s.exc[d];
 }
-async function newCardDialog(){
-  const name=await promptDialog('novo cartão','nome do cartão (ex.: Nubank)','');if(!name||!name.trim())return null;
-  const due=parseInt(await promptDialog('vencimento','dia do vencimento da fatura (1–31)','','numeric'),10);
-  if(!(due>=1&&due<=31)){toast('dia inválido');return null}
-  const id=uid();db.cards[id]={id,name:name.trim(),due,u:now()};save();return db.cards[id];
+const cardLbl=c=>`${c.name} (${c.close?`fecha ${c.close}, `:''}vence ${c.due})`;
+const br=s=>{const p=parseD(s);return `${pad(p.d)}/${pad(p.m)}`};
+function faturaDue(c,purchase){
+  const p=parseD(purchase);let y=p.y,m=p.m;const nx=()=>{const a=addMonths(y,m,1);y=a.y;m=a.m};
+  if(c.close){if(p.d>=c.close)nx();if(c.due<=c.close)nx()}
+  else if(p.d>c.due)nx();
+  return ds(y,m,Math.min(c.due,dim(y,m)));
+}
+function cardDialog(c){
+  return new Promise(res=>{
+    const d=$('#dlg');
+    d.innerHTML=`<h3>${c?'editar cartão':'adicionar cartão'}</h3><label class="f">nome<input id="cdName" placeholder="ex.: Nubank" value="${esc(c?c.name:'')}"></label><div class="two"><label class="f">dia do fechamento<input id="cdClose" inputmode="numeric" placeholder="ex.: 25" value="${c&&c.close?c.close:''}"></label><label class="f">dia do vencimento<input id="cdDue" inputmode="numeric" placeholder="ex.: 5" value="${c?c.due:''}"></label></div><p class="hint">compras feitas a partir do dia do fechamento vão para a fatura seguinte.</p><div class="actions"><button class="btn" id="cdNo">cancelar</button><button class="btn primary" id="cdOk">${c?'salvar':'adicionar'}</button></div>`;
+    $('#dlgWrap').classList.add('on');setTimeout(()=>d.querySelector('#cdName').focus(),50);
+    const done=v=>{$('#dlgWrap').classList.remove('on');res(v)};
+    d.querySelector('#cdNo').onclick=()=>done(null);
+    d.querySelector('#cdOk').onclick=()=>{
+      const name=d.querySelector('#cdName').value.trim(),close=parseInt(d.querySelector('#cdClose').value,10),due=parseInt(d.querySelector('#cdDue').value,10);
+      if(!name)return toast('dê um nome ao cartão');
+      if(!(due>=1&&due<=31))return toast('dia do vencimento inválido');
+      if(d.querySelector('#cdClose').value&&!(close>=1&&close<=31))return toast('dia do fechamento inválido');
+      const vals={name,close:close>=1&&close<=31?close:null,due,u:now()};
+      let card;if(c){Object.assign(c,vals);card=c}else{const id=uid();card=db.cards[id]={id,...vals}}
+      save();done(card);
+    };
+  });
+}
+function maskMoney(el,allowNeg){
+  el.setAttribute('inputmode','numeric');el.setAttribute('placeholder','R$ 0,00');el.setAttribute('autocomplete','off');
+  if(el.value){const n=parseMoney(el.value);el.value=isFinite(n)&&n!==0?(n<0?'-':'')+money(Math.abs(n)):''}
+  el.addEventListener('input',()=>{
+    const neg=allowNeg&&el.value.includes('-');const dg=el.value.replace(/\D/g,'').replace(/^0+/,'');
+    if(!dg){el.value=neg?'-':'';return}
+    el.value=(neg?'-':'')+money(parseInt(dg,10)/100);
+  });
 }
 
 /* ---------- horizonte ---------- */
@@ -563,36 +693,39 @@ function openHorizon(){
 $('#btnHorizon').onclick=openHorizon;
 
 /* ---------- totais ---------- */
-function renderTotais(){
-  const t=monthTotals(view.y,view.m),proj=compute().proj,lbl=`${MESES_L[view.m-1]} de ${view.y}`;
-  const isFuture=t.elapsed===0;
-  const avgTxt=isFuture?money(proj):money(t.avg);
-  const avgMsg=isFuture?'mês ainda não começou':(proj<=0?'cadastre a previsão do diário':(t.avg>proj?'acima da meta — desacelera':'dentro da meta — pode seguir'));
-  const pct=Math.round(t.pct*1000)/10;
-  let h=`<div class="pad"><h2>totais <span class="mut" style="font-weight:400;font-size:16px">· ${lbl}</span></h2>
-  <div class="cards">
-   <button class="card" data-m="perf"><div class="k">performance</div><div class="v ${t.perf<0?'gneg':'gpos'}">${money(t.perf)}</div><div class="s">tudo que entra − tudo que sai</div></button>
-   <button class="card" data-m="eco"><div class="k">economizado</div><div class="v">${money(t.economia)}</div><div class="s">${pct.toString().replace('.',',')}% da renda · ideal 20–30%</div><div class="bar"><i style="width:${Math.min(100,pct/30*100)}%"></i></div></button>
-   <button class="card" data-m="custo"><div class="k">custo de vida</div><div class="v">${money(t.custo)}</div><div class="s">saídas + diário + cartões</div></button>
-   <button class="card" data-m="avg"><div class="k">diário médio</div><div class="v ${!isFuture&&proj>0&&t.avg>proj?'gneg':''}">${avgTxt}</div><div class="s">meta ${money(proj)}/dia · ${avgMsg}</div></button>
-  </div>
-  <p class="mut small" style="margin:-8px 0 14px">toque num total para ver o ano.</p>
-  <h3>resumo do mês</h3><div class="list">
-   ${['entrada','saida','diario','economia','cartao'].map(k=>`<div class="li">${ic(k,'lg')}<div class="grow"><div class="t">${TYPES[k].label}</div>${k==='diario'?`<div class="sub">realizado ${money(t.dReal)} · previsto ${money(t.dProj)}</div>`:''}</div><span class="amt">${money(t[k])}</span></div>`).join('')}
-   <div class="li"><div class="grow"><div class="t"><b>saldo no fim do mês</b></div></div><span class="amt ${t.end<0?'gneg':'gpos'}">${money(t.end)}</span></div>
-  </div>`;
+const PJ='<span class="ic pj">D</span>';
+const op=s=>`<span class="op">${s}</span>`;
+function totaisHTML(){
+  const t=monthTotals(view.y,view.m);
+  const pct=t.entrada>0?Math.round(t.pct*1000)/10:0;
+  const perfF=[ic('entrada'),op('−'),ic('saida'),op('−'),ic('diario'),op('−'),ic('economia'),op('−'),ic('cartao'),op('−'),PJ].join('');
+  const custoF=[ic('saida'),op('+'),ic('diario'),op('+'),ic('cartao'),op('+'),PJ].join('');
+  let h=`<div class="sec">cálculos do mês · ${MESES_L[view.m-1]} ${view.y}</div>
+  <button class="calc" data-m="perf"><div><div class="ct">performance</div><div class="fx">${perfF}</div></div><div class="cv"><div class="${t.perf<0?'gneg':'gpos'}">${money(t.perf)}</div><div class="cs">${t.perf<0?'faltou dinheiro':'sobrou dinheiro'}</div></div></button>
+  <button class="calc" data-m="eco"><div><div class="ct">economizado</div><div class="fx">${ic('economia')}<span class="pbar"><i style="width:${Math.min(100,pct/30*100)}%"></i></span>${ic('entrada')}</div></div><div class="cv"><div>${String(pct).replace('.',',')}%</div><div class="cs">${t.economia>0?money(t.economia)+' guardado':'nada guardado'}</div></div></button>
+  <button class="calc" data-m="custo"><div><div class="ct">custo de vida</div><div class="fx">${custoF}</div></div><div class="cv"><div>${money(t.custo)}</div><div class="cs">${t.custo>t.entrada?'acima da renda':'dentro da renda'}</div></div></button>
+  <button class="calc" data-m="avg"><div><div class="ct">diário médio</div><div class="fx">${ic('diario')}${op('/')}<span style="font-size:17px;color:var(--mut)">${t.elapsed}</span></div></div><div class="cv"><div class="${t.elapsed&&t.meta>0&&t.avg>t.meta?'gneg':''}">${money(t.avg)}</div><div class="cs">${PJ} ${money(t.meta)}</div></div></button>
+  <div class="sec">movimentações do mês</div>
+  ${TYPE_KEYS.map(k=>`<button class="mrow" data-f="${k}">${ic(k)}<span class="grow">${TYPES[k].label}</span><span>${money(k==='diario'?t.dReal:t[k])}</span></button>`).join('')}
+  <button class="mrow" data-f="todas">${ic('todas')}<span class="grow">ver todas</span></button>
+  <div class="sec">previsão de diários do mês</div>
+  <div class="mrow">${PJ}<span class="grow">previsão de diário <span class="mut" style="font-weight:400">×${t.projDays}</span></span><span>${money(t.dProj)}</span></div>
+  <div class="mrow"><span class="grow">saldo no fim do mês</span><b class="${t.end<0?'gneg':'gpos'}">${money(t.end)}</b></div>`;
   const cardIds=Object.keys(t.byCard);
-  if(cardIds.length)h+=`<h3 style="margin-top:22px">faturas por cartão</h3><div class="list">${cardIds.map(id=>`<div class="li">${ic('cartao','lg')}<div class="grow"><div class="t">${esc(db.cards[id]?db.cards[id].name:'sem cartão definido')}</div></div><span class="amt">${money(t.byCard[id])}</span></div>`).join('')}</div>`;
-  h+='</div>';
-  const v=$('#view-totais');v.innerHTML=h;
-  v.querySelectorAll('[data-m]').forEach(b=>b.onclick=()=>yearSheet(b.dataset.m));
+  if(cardIds.length)h+=`<div class="sec">faturas por cartão</div>${cardIds.map(id=>`<div class="mrow">${ic('cartao')}<span class="grow">${esc(db.cards[id]?db.cards[id].name:'sem cartão definido')}</span><span>${money(t.byCard[id])}</span></div>`).join('')}`;
+  return h;
 }
+function bindTotais(root){
+  root.querySelectorAll('[data-m]').forEach(b=>b.onclick=()=>yearSheet(b.dataset.m));
+  root.querySelectorAll('[data-f]').forEach(b=>b.onclick=()=>{ui.filter=b.dataset.f;saveUI();setTab('saldos')});
+}
+function renderTotais(){const v=$('#view-totais');v.innerHTML=totaisHTML();bindTotais(v)}
 function yearSheet(metric){
   const names={perf:'performance',eco:'economizado',custo:'custo de vida',avg:'diário médio'};
   let tot=0,h=shead(`${names[metric]} · ${view.y}`)+'<div class="list">';
   for(let m=1;m<=12;m++){
     const t=monthTotals(view.y,m);
-    const v=metric==='perf'?t.perf:metric==='eco'?t.economia:metric==='custo'?t.custo:(t.elapsed?t.avg:compute().proj);
+    const v=metric==='perf'?t.perf:metric==='eco'?t.economia:metric==='custo'?t.custo:(t.elapsed?t.avg:t.meta);
     tot+=v;
     h+=`<button class="li" data-mm="${m}"><div class="grow"><div class="t">${MESES_L[m-1]}</div>${metric==='eco'?`<div class="sub">${(Math.round(t.pct*1000)/10).toString().replace('.',',')}% da renda</div>`:''}</div><span class="amt ${metric==='perf'&&v<0?'gneg':''}">${money(v)}</span></button>`;
   }
@@ -601,32 +734,47 @@ function yearSheet(metric){
 }
 
 /* ---------- tags ---------- */
+const SVG_PEN='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 20h4L19 9l-4-4L4 16z"/><path d="M14 6l4 4"/></svg>';
+const SVG_TAGPLUS='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 6h8l3 6-3 6H9"/><path d="M5 9v6M2 12h6"/></svg>';
+const SVG_SEARCH='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><circle cx="10" cy="10" r="6"/><path d="M15 15l5 5"/></svg>';
 function renderTags(){
-  const c=compute(),n=dim(view.y,view.m),by={};
+  const n=dim(view.y,view.m),by={};
   for(let d=1;d<=n;d++)for(const it of dayOf(ds(view.y,view.m,d)).list)if(it.tag)(by[it.tag]||(by[it.tag]=[])).push(it);
   const tags=live(db.tags).sort((a,b)=>a.name.localeCompare(b.name));
-  let h=`<div class="pad"><h2>tags <span class="mut" style="font-weight:400;font-size:16px">· ${MESES_L[view.m-1]} de ${view.y}</span></h2><p class="mut small" style="margin-bottom:14px">agrupe o que quiser acompanhar de perto: moradia, "cancelar", reembolsos, contas divididas…</p>`;
-  if(!tags.length)h+=`<p class="mut" style="padding:20px 0">nenhuma tag ainda.</p>`;
-  for(const t of tags){
-    const list=by[t.id]||[],sum=list.reduce((a,it)=>a+it.amount,0);
-    h+=`<details class="tag"><summary><span class="dot" style="background:${t.color}"></span><span style="flex:1">${esc(t.name)}<span class="mut small"> · ${list.length}</span></span><b>${money(sum)}</b></summary><div class="list" style="border:0;padding-left:8px">${list.map(itemRow).join('')||'<p class="mut small" style="padding:10px 0">nada neste mês.</p>'}</div></details>`;
+  let h=`<div class="tghead"><span>tags · ${MESES[view.m-1]}/${String(view.y).slice(2)}</span><button id="tgManage" title="editar tags">${SVG_PEN}</button><button id="tgNew" title="criar tag">${SVG_TAGPLUS}</button></div>`;
+  if(!tags.length)h+=`<div class="empty"><div class="ecirc">${SVG_TAGPLUS}</div><p>sem tags por aqui. toque no botão acima para criar.</p></div>`;
+  else{
+    h+=`<div class="tgsearch">${SVG_SEARCH}<input id="tgQ" placeholder="filtrar tags"></div>`;
+    for(const t of tags){
+      const list=by[t.id]||[],sum=list.reduce((a,it)=>a+it.amount,0);
+      h+=`<details class="tag" data-name="${esc(t.name.toLowerCase())}"><summary><span class="dot" style="background:${t.color}"></span><span style="flex:1">${esc(t.name)}<span class="mut small"> · ${list.length}</span></span><b>${money(sum)}</b></summary><div class="list" style="border:0;padding-left:8px">${list.map(itemRow).join('')||'<p class="mut small" style="padding:10px 0">nada neste mês.</p>'}</div></details>`;
+    }
   }
-  h+=`<button class="btn full" id="tgManage">gerenciar tags</button></div>`;
   const v=$('#view-tags');v.innerHTML=h;bindItems(v);
   v.querySelector('#tgManage').onclick=manageTags;
+  v.querySelector('#tgNew').onclick=()=>tagEditor(null);
+  const q=v.querySelector('#tgQ');if(q)q.oninput=()=>{const s=q.value.trim().toLowerCase();v.querySelectorAll('details.tag').forEach(d=>d.style.display=d.dataset.name.includes(s)?'':'none')};
 }
 function manageTags(){
   const tags=live(db.tags).sort((a,b)=>a.name.localeCompare(b.name));
-  openSheet(shead('tags')+`<div class="list">${tags.map(t=>`<button class="li" data-id="${t.id}"><span class="dot" style="background:${t.color}"></span><span class="grow">${esc(t.name)}</span><span class="mut">editar</span></button>`).join('')}</div><button class="btn primary full" id="tgNew">+ nova tag</button>`,s=>{
+  openSheet(shead('tags')+`<div class="list">${tags.map(t=>`<button class="li" data-id="${t.id}"><span class="dot" style="background:${t.color}"></span><span class="grow">${esc(t.name)}${t.noSaldo||t.noTot?`<div class="sub">${[t.noSaldo?'fora do saldo':'',t.noTot?'fora dos totais':''].filter(Boolean).join(' · ')}</div>`:''}</span><span class="mut">editar</span></button>`).join('')||'<p class="mut" style="padding:14px 0">nenhuma tag ainda.</p>'}</div><button class="btn primary full" id="tgNew2">+ criar tag</button>`,s=>{
     s.querySelectorAll('[data-id]').forEach(b=>b.onclick=()=>tagEditor(db.tags[b.dataset.id]));
-    s.querySelector('#tgNew').onclick=()=>tagEditor(null);
+    s.querySelector('#tgNew2').onclick=()=>tagEditor(null);
   });
 }
 function tagEditor(t){
-  let color=t?t.color:TAG_COLORS[live(db.tags).length%TAG_COLORS.length];
-  openSheet(shead(t?'editar tag':'nova tag')+`<label class="f">nome<input id="tgName" value="${esc(t?t.name:'')}"></label><div class="mut small">cor</div><div class="colors">${TAG_COLORS.map(c=>`<button data-c="${c}" style="background:${c}" class="${c===color?'on':''}"></button>`).join('')}</div><div class="actions">${t?'<button class="btn danger" id="tgDel">apagar</button>':''}<button class="btn primary" id="tgSave">salvar</button></div>`,s=>{
+  let color=t?t.color:TAG_COLORS[0][1];
+  openSheet(shead(t?'editar tag':'criar tag')+`<label class="f">nome<input id="tgName" maxlength="30" value="${esc(t?t.name:'')}"></label><div class="cnt" id="tgCnt"></div>
+  <div class="ct2">cor de fundo</div><div class="tcolors">${TAG_COLORS.map(([n,c])=>`<button data-c="${c}" style="background:${c}" class="${c===color?'on':''}">${n}<span class="ok">✓</span></button>`).join('')}</div>
+  <details class="adv" ${t&&(t.noSaldo||t.noTot)?'open':''}><summary><b>configurações avançadas ▾</b><span class="mut small">defina em quais partes do app as movimentações com essa tag serão calculadas.</span></summary>
+    <label class="chk"><input type="checkbox" id="tgSaldo" ${t&&t.noSaldo?'':'checked'}>contar no saldo</label>
+    <label class="chk"><input type="checkbox" id="tgTot" ${t&&t.noTot?'':'checked'}>contar nos totais (performance, custo de vida, economizado)</label>
+    <p class="hint">ex.: uma tag "reembolso da empresa" pode ficar fora dos totais para não inflar seu custo de vida.</p></details>
+  <div class="actions">${t?'<button class="btn danger" id="tgDel">apagar</button>':''}<button class="btn primary" id="tgSave">${t?'salvar':'criar'}</button></div>`,s=>{
+    const nm=s.querySelector('#tgName'),cnt=s.querySelector('#tgCnt');const uc=()=>cnt.textContent=`${nm.value.length}/30`;nm.oninput=uc;uc();
+    if(!t)setTimeout(()=>nm.focus(),80);
     s.querySelectorAll('[data-c]').forEach(b=>b.onclick=()=>{color=b.dataset.c;s.querySelectorAll('[data-c]').forEach(x=>x.classList.toggle('on',x===b))});
-    s.querySelector('#tgSave').onclick=()=>{const name=s.querySelector('#tgName').value.trim();if(!name)return toast('dê um nome');if(t)Object.assign(t,{name,color,u:now()});else{const id=uid();db.tags[id]={id,name,color,u:now()}}save();render();manageTags()};
+    s.querySelector('#tgSave').onclick=()=>{const name=nm.value.trim();if(!name)return toast('dê um nome');const vals={name,color,noSaldo:!s.querySelector('#tgSaldo').checked,noTot:!s.querySelector('#tgTot').checked,u:now()};if(t)Object.assign(t,vals);else{const id=uid();db.tags[id]={id,...vals}}save();render();manageTags()};
     const d=s.querySelector('#tgDel');if(d)d.onclick=async()=>{if(!await dialog('apagar tag?','as movimentações continuam, só perdem a tag.',[{label:'apagar',val:true,cls:'primary'}]))return;t.del=true;t.u=now();save();render();manageTags()};
   });
 }
@@ -651,32 +799,37 @@ function renderMenu(){
   $('#view-menu').querySelectorAll('[data-k]').forEach(b=>b.onclick=()=>({prev:prevSheet,cards:cardsSheet,tags:manageTags,check:checkBalance,sync:syncSheet,backup:backupSheet,settings:settingsSheet,guide:guideSheet,wipe:wipeAll,install:async()=>{installEvt.prompt();await installEvt.userChoice;installEvt=null;renderMenu()}})[b.dataset.k]());
 }
 function prevSheet(){
-  const items=live(db.prev),tot=items.reduce((a,p)=>a+(+p.amount||0),0),div=+db.settings.divisor||30;
-  openSheet(shead('previsão do diário')+`<p class="hint">tudo que você gasta no dia a dia e <b>não chega boleto</b>: mercado, transporte, lazer, farmácia, compras… valores por <b>mês</b>, olhando extratos. o total ÷ ${div} vira a cota diária.</p>
+  const items=live(db.prev),tot=prevTotal(),dv=String(db.settings.divisor||30);
+  const opts=[['28','28 dias'],['30','30 dias'],['31','31 dias'],['mes','dias de cada mês']];
+  openSheet(shead('previsão de diário')+`<p class="hint">tudo que você gasta no dia a dia e <b>não chega boleto</b>: mercado, transporte, lazer, farmácia, compras… valores por <b>mês</b>, olhando seus extratos.</p>
   <div class="list">${items.map(p=>`<button class="li" data-id="${p.id}"><div class="grow"><div class="t">${esc(p.name)}</div></div><span class="amt">${money(p.amount)}</span></button>`).join('')}</div>
-  <div class="inline"><input id="pvName" placeholder="categoria"><input id="pvAmt" inputmode="decimal" placeholder="R$/mês" style="max-width:120px"><button class="btn primary" id="pvAdd">+</button></div>
-  <div class="status">total/mês <b>${money(tot)}</b> · por dia <b>${money(tot/div)}</b></div>`,s=>{
-    s.querySelector('#pvAdd').onclick=()=>{const name=s.querySelector('#pvName').value.trim(),a=parseMoney(s.querySelector('#pvAmt').value);if(!name||!isFinite(a))return toast('preencha categoria e valor');const id=uid();db.prev[id]={id,name,amount:r2(a),u:now()};save();render();prevSheet()};
-    s.querySelectorAll('[data-id]').forEach(b=>b.onclick=async()=>{const p=db.prev[b.dataset.id];const act=await dialog(esc(p.name),money(p.amount)+' por mês',[{label:'editar valor',val:'edit'},{label:'apagar',val:'del',cls:'danger'}]);
-      if(act==='edit'){const v=await promptDialog(p.name,'valor por mês',numStr(p.amount),'decimal');const a=parseMoney(v);if(v!=null&&isFinite(a)){p.amount=r2(a);p.u=now()}}
+  <div class="inline"><input id="pvName" placeholder="descrição (ex.: transporte)"><input id="pvAmt" style="max-width:150px"><button class="btn primary" id="pvAdd">+</button></div>
+  <div class="ptot"><div class="pr"><span>total mensal</span><span>${money(tot)}</span></div><div class="pr"><span>dividido por</span><select id="pvDiv">${opts.map(([v,l])=>`<option value="${v}" ${dv===v?'selected':''}>${l}</option>`).join('')}</select></div><div class="pr big"><span class="mut small">${dv==='mes'?'por dia neste mês':'por dia'}</span><b>${money(dailyProj(todayStr()))}</b></div></div>`,s=>{
+    maskMoney(s.querySelector('#pvAmt'));
+    const add=()=>{const name=s.querySelector('#pvName').value.trim(),a=parseMoney(s.querySelector('#pvAmt').value);if(!name||!isFinite(a)||a<=0)return toast('preencha descrição e valor');const id=uid();db.prev[id]={id,name,amount:r2(a),u:now()};save();render();prevSheet();setTimeout(()=>{const n=document.getElementById('pvName');if(n)n.focus()},60)};
+    s.querySelector('#pvAdd').onclick=add;s.querySelector('#pvAmt').onkeydown=e=>{if(e.key==='Enter')add()};
+    s.querySelector('#pvDiv').onchange=e=>{const v=e.target.value;db.settings=Object.assign({},db.settings,{divisor:v==='mes'?'mes':+v,u:now()});save();render();prevSheet()};
+    s.querySelectorAll('[data-id]').forEach(b=>b.onclick=async()=>{const p=db.prev[b.dataset.id];const act=await dialog(esc(p.name),money(p.amount)+' por mês',[{label:'editar valor',val:'edit'},{label:'renomear',val:'name'},{label:'apagar',val:'del',cls:'danger'}]);
+      if(act==='edit'){const v=await promptDialog(p.name,'valor por mês',money(p.amount),'decimal');const a=parseMoney(v);if(v!=null&&isFinite(a)&&a>0){p.amount=r2(a);p.u=now()}else return}
+      else if(act==='name'){const v=await promptDialog('renomear','descrição',p.name);if(v&&v.trim()){p.name=v.trim();p.u=now()}else return}
       else if(act==='del'){p.del=true;p.u=now()}else return;
       save();render();prevSheet()});
   });
 }
 function cardsSheet(){
   const cards=live(db.cards);
-  openSheet(shead('cartões de crédito')+`<p class="hint">cadastre seus cartões e lance cada fatura (ou compra) no <b>dia de vencimento</b>, no filtro "gastos com cartão".</p><div class="list">${cards.map(c=>`<button class="li" data-id="${c.id}">${ic('cartao','lg')}<div class="grow"><div class="t">${esc(c.name)}</div><div class="sub">vence todo dia ${c.due}</div></div><span class="mut">editar</span></button>`).join('')||'<p class="mut" style="padding:14px 0">nenhum cartão.</p>'}</div><button class="btn primary full" id="cdNew">+ novo cartão</button>`,s=>{
-    s.querySelector('#cdNew').onclick=async()=>{if(await newCardDialog()){render();cardsSheet()}};
-    s.querySelectorAll('[data-id]').forEach(b=>b.onclick=async()=>{const c=db.cards[b.dataset.id];const act=await dialog(esc(c.name),'vence dia '+c.due,[{label:'renomear',val:'name'},{label:'mudar vencimento',val:'due'},{label:'apagar',val:'del',cls:'danger'}]);
-      if(act==='name'){const v=await promptDialog('renomear','nome',c.name);if(v&&v.trim())c.name=v.trim()}
-      else if(act==='due'){const v=parseInt(await promptDialog('vencimento','dia (1–31)',String(c.due),'numeric'),10);if(v>=1&&v<=31)c.due=v}
-      else if(act==='del')c.del=true;else return;
-      c.u=now();save();render();cardsSheet()});
+  openSheet(shead('cartões')+`<p class="hint">com o dia do fechamento cadastrado, ao lançar uma compra o app mostra em qual fatura ela cai.</p><div class="list">${cards.map(c=>`<button class="li" data-id="${c.id}">${ic('cartao','lg')}<div class="grow"><div class="t">${esc(c.name)}</div><div class="sub">${c.close?`fecha dia ${c.close} · `:''}vence dia ${c.due}</div></div><span class="mut">editar</span></button>`).join('')||'<p class="mut" style="padding:14px 0">sem cartões por aqui.</p>'}</div><button class="btn primary full" id="cdNew">+ adicionar cartão</button>`,s=>{
+    s.querySelector('#cdNew').onclick=async()=>{if(await cardDialog(null)){render();cardsSheet()}};
+    s.querySelectorAll('[data-id]').forEach(b=>b.onclick=async()=>{const c=db.cards[b.dataset.id];const act=await dialog(esc(c.name),(c.close?`fecha dia ${c.close} · `:'')+'vence dia '+c.due,[{label:'editar',val:'edit'},{label:'apagar',val:'del',cls:'danger'}]);
+      if(act==='edit'){if(!await cardDialog(c))return}
+      else if(act==='del'){c.del=true;c.u=now();save()}else return;
+      render();cardsSheet()});
   });
 }
 function settingsSheet(){
-  openSheet(shead('configurações')+`<label class="f">saldo fica verde a partir de (R$)<input id="stG" inputmode="decimal" value="${numStr(db.settings.greenFrom)}"></label><p class="hint">abaixo disso e acima de zero fica amarelo; negativo fica vermelho.</p><label class="f">dividir a previsão do diário por<input id="stD" inputmode="numeric" value="${db.settings.divisor||30}"></label><p class="hint">padrão do método: 30 dias.</p><button class="btn primary full" id="stSave">salvar</button>`,s=>{
-    s.querySelector('#stSave').onclick=()=>{const g=parseMoney(s.querySelector('#stG').value),d=parseInt(s.querySelector('#stD').value,10);if(!isFinite(g)||!(d>0))return toast('valores inválidos');db.settings={greenFrom:r2(g),divisor:d,u:now()};save();closeSheet();render();toast('salvo ✓')};
+  openSheet(shead('configurações')+`<label class="f">saldo fica verde a partir de<input id="stG" value="${money(+db.settings.greenFrom||0)}"></label><p class="hint">abaixo disso e acima de zero fica amarelo; negativo fica vermelho. a divisão do diário fica em "previsão do diário".</p><button class="btn primary full" id="stSave">salvar</button>`,s=>{
+    maskMoney(s.querySelector('#stG'));
+    s.querySelector('#stSave').onclick=()=>{const g=parseMoney(s.querySelector('#stG').value||'0');if(!isFinite(g))return toast('valor inválido');db.settings=Object.assign({},db.settings,{greenFrom:r2(g),u:now()});save();closeSheet();render();toast('salvo ✓')};
   });
 }
 function backupSheet(){
@@ -786,11 +939,20 @@ $('#prevM').onclick=()=>{view=addMonths(view.y,view.m,-1);render()};
 $('#nextM').onclick=()=>{view=addMonths(view.y,view.m,1);render()};
 $('#btnToday').onclick=()=>{const p=parseD(todayStr());view={y:p.y,m:p.m};wantScrollToday=true;setTab('saldos')};
 document.addEventListener('keydown',e=>{if(e.key==='Escape'){if($('#dlgWrap').classList.contains('on'))return;closeSheet();$('#horizon').classList.remove('on')}});
-function render(){renderHeader();if(tab==='saldos')renderRows();else if(tab==='totais')renderTotais();else if(tab==='tags')renderTags();else renderMenu()}
+function render(){
+  if(tab==='totais'&&isSide())return setTab('saldos');
+  renderHeader();
+  if(tab==='saldos')renderRows();else if(tab==='totais')renderTotais();else if(tab==='tags')renderTags();else renderMenu();
+  const side=$('#side');
+  if(isSide()){side.innerHTML=totaisHTML()+`<p class="mut small pad">clique no valor para ver/editar o dia · botão direito para lançar · clique no número do dia para o check-in</p>`;bindTotais(side)}else side.innerHTML='';
+}
+window.matchMedia('(min-width:1000px)').addEventListener('change',()=>render());
+window.matchMedia('(min-width:1400px)').addEventListener('change',()=>render());
 
 /* ---------- first run ---------- */
 function welcome(){
   openSheet(shead('bem-vindo ao Fluxo')+`<p class="hint" style="font-size:14px">vamos começar pelo <b>saldo de hoje</b>: some o dinheiro de todas as suas contas correntes.</p><label class="f">saldo atual (R$)<input id="wSaldo" inputmode="decimal" placeholder="0,00"></label><button class="btn primary full" id="wGo">começar</button><button class="btn full" id="wSkip">pular</button>`,s=>{
+    maskMoney(s.querySelector('#wSaldo'));
     const done=()=>{store.set('fluxo-welcomed','1')};
     s.querySelector('#wGo').onclick=()=>{const v=parseMoney(s.querySelector('#wSaldo').value);if(isFinite(v)&&v!==0){const id=uid(),t=todayStr();db.series[id]={id,type:v>0?'entrada':'saida',desc:'saldo inicial',amount:Math.abs(r2(v)),tag:'',card:'',start:t,rep:'none',count:null,until:null,exc:{},u:now()};save()}done();render();prevSheet()};
     s.querySelector('#wSkip').onclick=()=>{done();closeSheet()};

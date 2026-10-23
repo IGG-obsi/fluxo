@@ -1,6 +1,6 @@
 // Fluxo – service worker: guarda o app no aparelho para funcionar offline.
 // Ao publicar uma versão nova, troque o número abaixo.
-const CACHE = 'fluxo-v1';
+const CACHE = 'fluxo-v2';
 const ASSETS = ['./', './index.html', './manifest.webmanifest', './icons/icon-192.png', './icons/icon-512.png', './icons/maskable-512.png'];
 
 self.addEventListener('install', e => {
