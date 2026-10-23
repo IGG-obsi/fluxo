@@ -439,6 +439,46 @@ input[type=date]{color-scheme:dark}
 .aopt:last-child{border-bottom:0}
 .aopt svg{width:24px;height:24px}
 .aopt.danger{color:#f07a7f}
+.dlg{background:#16191d;border-radius:22px;padding:30px 26px 14px;max-width:440px}
+.dlg h3{font-size:27px;margin-bottom:10px;line-height:1.2}
+.dlg .dtx{font-size:17px;color:var(--mut);line-height:1.45;margin-bottom:10px}
+.dbtn{display:block;width:100%;padding:17px;border-radius:40px;font-weight:700;font-size:18px;margin-top:14px;background:#fff;color:#111}
+.dbtn.sec{background:transparent;border:2px solid #3a3e45;color:var(--txt)}
+.dbtn.danger{background:#262a33;border:2px solid #7a3a44;color:#f07a7f}
+.dcancel{display:block;width:100%;padding:18px;font-weight:700;font-size:18px;margin-top:4px}
+.dinput{font-size:26px;border:0;border-bottom:2px solid #3a3e45;border-radius:0;background:transparent;padding:10px 0;margin:6px 0 4px}
+.dinput:focus{border-color:#fff}
+.phead button.red{color:#f07a7f}
+.idet{padding:26px 22px}
+.ityp{display:flex;align-items:center;gap:12px;font-size:21px;font-weight:700}
+.ityp .ic{width:34px;height:34px}.ityp .ic svg{width:20px;height:20px}
+.ititle{font-size:34px;font-weight:800;margin:20px 0 8px;word-break:break-word}
+.iamt{font-size:26px}
+.idate{font-size:22px;color:var(--mut);margin-top:12px}
+.iextra{font-size:17px;color:var(--mut);margin-top:12px;display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.isep{border-top:1px solid var(--line);margin:30px 0 24px}
+.imeta{font-size:18px;color:var(--mut)}
+.empty.click .ecirc{cursor:pointer}
+.btn{border-radius:40px;padding:17px;font-size:17px;background:transparent;border:2px solid #3a3e45;color:var(--txt)}
+.btn.primary{background:#fff;color:#111;border-color:#fff}
+.btn.danger{background:#262a33;border-color:#7a3a44;color:#f07a7f}
+.btn.full{margin-top:12px}
+.page[data-key=day] .pbody{display:flex;flex-direction:column}
+.dempty{flex:1;display:flex;align-items:center;justify-content:center;padding-bottom:60px}
+#toast{position:fixed;left:0;right:0;bottom:0;transform:translateY(110%);background:#fff;color:#111;padding:26px 22px calc(26px + env(safe-area-inset-bottom));font-size:18px;font-weight:500;border-radius:0;z-index:60;display:block;max-width:none;text-align:left;transition:transform .32s cubic-bezier(.22,.8,.24,1);box-shadow:0 -8px 24px rgba(0,0,0,.35);pointer-events:none}
+#toast.on{transform:none}
+@media (min-width:1000px){#toast{left:auto;right:24px;bottom:24px;width:380px;border-radius:12px;padding:18px 22px;transform:translateY(160%)}#toast.on{transform:none}}
+.simres{margin:6px 18px 0}
+.simv{border-radius:16px;padding:16px 18px;margin:16px 0 6px}
+.simv b{display:block;font-size:20px;margin-bottom:4px}
+.simv span{font-size:15px;opacity:.9}
+.simv.ok{background:#1f4a2a;color:#d6f5dc}.simv.warn{background:#4d3c08;color:#fbe6a6}.simv.bad{background:#5a1f25;color:#ffd5d8}
+.simrow{display:flex;justify-content:space-between;gap:12px;padding:15px 0;border-bottom:1px solid var(--line);font-size:16px}
+.simrow .l{color:var(--mut)}
+.simrow .r{text-align:right;white-space:nowrap}
+.simrow .r small{display:block;color:var(--mut);font-size:13px;margin-top:3px}
+.simtip{font-size:15px;color:var(--mut);padding:14px 0 4px;line-height:1.45}
+.simtip b{color:var(--txt)}
 </style>
 </head>
 <body>
@@ -637,7 +677,7 @@ function monthTotals(y,m){
 
 /* ---------- toast / sheet / dialog ---------- */
 let toastT;
-function toast(msg){const t=$('#toast');t.textContent=msg;t.style.display='block';clearTimeout(toastT);toastT=setTimeout(()=>t.style.display='none',2400)}
+function toast(msg){const t=$('#toast');t.textContent=String(msg).replace(/ ?✓$/,'');t.classList.add('on');clearTimeout(toastT);toastT=setTimeout(()=>t.classList.remove('on'),2600)}
 function openSheet(html,mount){$('#sheetWrap').style.zIndex=(typeof pageStack!=='undefined'&&pageStack.length)?'35':'';const s=$('#sheet');s.innerHTML=html;$('#sheetWrap').classList.add('on');s.scrollTop=0;s.querySelectorAll('[data-close]').forEach(b=>b.onclick=closeSheet);if(mount)mount(s)}
 function closeSheet(){$('#sheetWrap').classList.remove('on')}
 $('#sheetWrap').addEventListener('click',e=>{if(e.target.id==='sheetWrap')closeSheet()});
@@ -645,7 +685,8 @@ const shead=t=>`<div class="shead"><h3>${t}</h3><button class="x" data-close>×<
 function dialog(title,text,buttons){
   return new Promise(res=>{
     const d=$('#dlg');
-    d.innerHTML=`<h3>${title}</h3>${text?`<p class="mut" style="margin-bottom:16px;line-height:1.5">${text}</p>`:''}${buttons.map((b,i)=>`<button class="btn full ${b.cls||''}" data-i="${i}">${b.label}</button>`).join('')}<button class="btn full" data-i="-1">cancelar</button>`;
+    const cls=b=>b.cls==='danger'||/^(sim, )?apagar/.test(b.label)?'danger':(b.cls==='primary'?'':'sec');
+    d.innerHTML=`<h3>${title}</h3>${text?`<p class="dtx">${text}</p>`:''}${buttons.map((b,i)=>`<button class="dbtn ${cls(b)}" data-i="${i}">${b.label}</button>`).join('')}<button class="dcancel" data-i="-1">cancelar</button>`;
     $('#dlgWrap').classList.add('on');
     d.querySelectorAll('[data-i]').forEach(b=>b.onclick=()=>{$('#dlgWrap').classList.remove('on');const i=+b.dataset.i;res(i<0?null:buttons[i].val)});
   });
@@ -653,15 +694,15 @@ function dialog(title,text,buttons){
 function promptDialog(title,label,value,mode){
   return new Promise(res=>{
     const d=$('#dlg');
-    d.innerHTML=`<h3>${title}</h3><label class="f">${label}<input id="pIn" inputmode="${mode||'text'}" value="${esc(value||'')}"></label><div class="actions"><button class="btn" id="pNo">cancelar</button><button class="btn primary" id="pOk">ok</button></div>`;
+    d.innerHTML=`<h3>${title}</h3>${label?`<p class="dtx">${label}</p>`:''}<input class="dinput" id="pIn" inputmode="${mode||'text'}" autocomplete="off" value="${esc(value||'')}"><button class="dbtn" id="pOk">ok</button><button class="dcancel" id="pNo">cancelar</button>`;
     $('#dlgWrap').classList.add('on');
-    const inp=$('#pIn');if(mode==='decimal')maskMoney(inp,true);setTimeout(()=>inp.focus(),50);
+    const inp=$('#pIn');if(mode==='decimal')maskMoney(inp,true);setTimeout(()=>inp.focus(),80);
     const done=v=>{$('#dlgWrap').classList.remove('on');res(v)};
     $('#pNo').onclick=()=>done(null);$('#pOk').onclick=()=>done(inp.value);
     inp.onkeydown=e=>{if(e.key==='Enter')done(inp.value)};
   });
 }
-const scopeChoice=verb=>dialog(`${verb} movimentação recorrente`,'essa movimentação se repete. aplicar em:',[{label:'só esta',val:'one'},{label:'esta e as próximas',val:'next'},{label:'todas',val:'all'}]);
+const scopeChoice=verb=>dialog(`${verb} movimentação`,'essa movimentação se repete. aplicar em:',[{label:'só esta',val:'one'},{label:'esta e as próximas',val:'next'},{label:'todas',val:'all'}]);
 
 /* ---------- render: header ---------- */
 function renderHeader(){
@@ -779,13 +820,26 @@ async function deleteItem(it){
     else if(scope==='next'&&it.idx>0){s.until=addDays(it.date,-1)}
     else s.del=true;
   }else{
-    if(!await dialog('apagar?','essa ação não pode ser desfeita.',[{label:'apagar',val:true,cls:'primary'}]))return false;
+    if(!await dialog('apagar movimentação','essa ação não poderá ser desfeita.',[{label:'apagar',val:true,cls:'danger'}]))return false;
     s.del=true;
   }
-  s.u=now();save();render();toast('apagado');return true;
+  s.u=now();save();render();toast('movimentação apagada');return true;
 }
 const findItem=(sid,date)=>(compute().items[date]||[]).find(x=>x.sid===sid);
-function itemActions(it){actionSheet(esc(it.desc||tName(it.type)),()=>openForm({edit:it}),()=>deleteItem(it))}
+function openItem(it){
+  const s=db.series[it.sid]||{},p=parseD(it.date),sid=it.sid;let date=it.date;
+  const tgs=tagsOf(it).map(id=>db.tags[id]),card=it.card&&db.cards[it.card]?db.cards[it.card].name:'';
+  const ts=new Date(s.c||s.u||now());
+  const rec=s.parc?`parcelado em ${s.count}x`:(s.rep&&s.rep!=='none'?REP_TXT[s.rep]+(s.count?` · ${s.count}x`:' · a perder de vista'):'');
+  const extra=[rec,card?'cartão '+esc(card):''].filter(Boolean).join(' · ');
+  openPage({key:'item',title:'',actions:[{icon:SVG_TRASH,cls:'red',title:'apagar',on:async()=>{if(await deleteItem(it)){refreshItem=null;back()}}},{icon:SVG_PENS,title:'editar',on:()=>openForm({edit:it,onSaved:d=>{date=d}})}],
+    body:`<div class="idet"><div class="ityp">${ic(it.type)}<span>${tName(it.type)}</span></div><div class="ititle">${esc(it.desc||tName(it.type))}</div><div class="iamt">${money(it.amount)}</div><div class="idate">${pad(p.d)}/${pad(p.m)}/${p.y}</div>${extra||tgs.length?`<div class="iextra">${extra}${tgs.map(t=>`<span class="chip" style="background:${t.color}">${esc(t.name)}</span>`).join('')}</div>`:''}<div class="isep"></div><div class="imeta">criado em ${pad(ts.getDate())}/${pad(ts.getMonth()+1)}/${ts.getFullYear()} às ${pad(ts.getHours())}:${pad(ts.getMinutes())}</div></div>`},pg=>{
+    pg._onClose=()=>{refreshItem=null};
+  });
+  refreshItem=()=>{const n=findItem(sid,date)||findItem(sid,it.date);if(n)openItem(n);else{const pgEl=pageStack.find(x=>x.dataset.key==='item');if(pgEl){pageStack.splice(pageStack.indexOf(pgEl),1);pgEl.remove()}refreshItem=null}};
+}
+let refreshItem=null;
+function itemActions(it){openItem(it)}
 function bindItems(root){root.querySelectorAll('[data-sid]').forEach(b=>b.onclick=()=>{const it=findItem(b.dataset.sid,b.dataset.date);if(it)itemActions(it)})}
 let refreshDay=null;
 function openDay(k,f){
@@ -798,9 +852,9 @@ function openDay(k,f){
     b+=list.map(it=>{const tgs=tagsOf(it).map(id=>db.tags[id]);const card=it.card&&db.cards[it.card]?db.cards[it.card].name:'';const sign=it.type==='entrada'?'':'− ';
       return `<button class="drow" data-sid="${it.sid}" data-date="${it.date}">${ic(it.type)}<div class="grow"><div class="t">${esc(it.desc||tName(it.type))}${it.rec?' <span class="mut" style="font-weight:400">↻</span>':''}</div><div class="sub">${pad(p.d)}/${pad(p.m)}${card?' · '+esc(card):''} ${tgs.map(t=>`<span class="chip" style="background:${t.color}">${esc(t.name)}</span>`).join('')}</div></div><span class="amt">${sign}${money(it.amount)}</span></button>`}).join('');
     if(day.projD>0&&types.includes('diario'))b+=`<div class="drow proj">${ic('diario')}<div class="grow"><div class="t">previsão do diário</div><div class="sub">cota automática para dias futuros</div></div><span class="amt">− ${money(day.projD)}</span></div>`;
-    if(!list.length&&!(day.projD>0&&types.includes('diario')))b+=`<p class="mut" style="padding:24px 18px">nada lançado neste dia${flt==='todas'?'':' em '+FN(flt)}.</p>`;
-    b+=`</div><div class="dsum"><span>saldo do dia</span><b>${money(day.bal)}</b></div>`;
-    if(cur===todayStr())b+=`<div style="padding:0 18px 20px"><button class="btn full" id="dCheck">conferir saldo da conta</button></div>`;
+    const empty=!list.length&&!(day.projD>0&&types.includes('diario'));
+    if(empty)b=b.replace('<div style="border-top:1px solid var(--line)">','<div style="border-top:1px solid var(--line)" class="dempty">')+`<div class="empty click"><div class="ecirc" id="dEmptyAdd">${SVG_PLUS}</div><p>sem movimentações por aqui.<br>toque no + para adicionar.</p></div>`;
+    b+=`</div>`;
     openPage({key:'day',title:`<span class="dnav"><button id="dPrev" title="dia anterior">${CHEV_L}</button><b>${pad(p.d)}/${pad(p.m)}</b><button id="dNext" title="próximo dia">${CHEV_R}</button></span>`,
       actions:[{icon:SVG_PLUS,title:'adicionar',on:()=>flt==='todas'?chooseType('adicionar',t=>openForm({date:cur,type:t})):openForm({date:cur,type:flt})}],body:b},pg=>{
       pg.querySelector('.phead h1').classList.add('ctr');
@@ -808,7 +862,7 @@ function openDay(k,f){
       pg.querySelector('#dNext').onclick=()=>{cur=addDays(cur,1);draw()};
       pg.querySelector('#dFlt').onclick=()=>openFilterFor(flt,v=>{flt=v;draw()});
       bindItems(pg);
-      const c=pg.querySelector('#dCheck');if(c)c.onclick=checkBalance;
+      const ea=pg.querySelector('#dEmptyAdd');if(ea)ea.onclick=()=>pg.querySelector('[data-pact="0"]').click();
       pg._onClose=()=>{refreshDay=null};
     });
   };
@@ -847,11 +901,11 @@ function openPage(o,mount){
     $('#pages').appendChild(el);pageStack.push(el);$('#pages').classList.add('on');
     try{history.pushState({fluxoPage:pageStack.length},'')}catch(e){}
   }
-  const acts=(o.actions||[]).map((a,i)=>`<button data-pact="${i}" title="${a.title||''}">${a.icon}</button>`).join('');
+  const acts=(o.actions||[]).map((a,i)=>`<button data-pact="${i}" class="${a.cls||''}" title="${a.title||''}">${a.icon}</button>`).join('');
   let head;
   if(o.amount!==undefined)head=`<div class="phead amt"><span class="rs">R$</span><input id="pgAmt" value="${esc(o.amount)}">${acts}${o.noClose?'':`<button data-pback title="fechar">${SVG_X}</button>`}</div>`;
   else if(o.mode==='close')head=`<div class="phead"><h1>${o.title}</h1>${acts}<button data-pback title="fechar">${SVG_X}</button></div>`;
-  else head=`<div class="phead back"><button data-pback title="voltar">${SVG_BACK}</button><h1>${o.title}</h1>${acts}</div>`;
+  else head=`<div class="phead back"><button data-pback title="voltar">${SVG_BACK}</button><h1>${o.title||''}</h1>${acts}</div>`;
   el.innerHTML=head+`<div class="pbody">${o.body||''}</div>`+(o.foot?`<div class="pfoot">${o.foot}</div>`:'')+(o.button?`<div class="pfoot"><button class="pbtn" id="pgBtn">${o.button}</button></div>`:'');
   el.querySelectorAll('[data-pback]').forEach(b=>b.onclick=back);
   (o.actions||[]).forEach((a,i)=>el.querySelector(`[data-pact="${i}"]`).onclick=a.on);
@@ -883,9 +937,82 @@ const tName=t=>t==='cartao'?'gasto com cartão':TYPES[t].one;
 const REP_TXT={none:'não repete',month:'repete mensalmente',week:'repete semanalmente',day:'repete diariamente',parc:'parcelado'};
 const SVG_ROT='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12a8 8 0 108-8H8M8 1v6h6" transform="translate(0 1)"/></svg>';
 const REP_L={none:'não repete',day:'repete todo dia',week:'repete toda semana',month:'repete todo mês'};
+const SVG_SIM='<svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 17l6-6 4 4 8-8"/><path d="M15 7h6v6"/></svg>';
+function withHypo(extra,fn){for(const s of extra)db.series[s.id]=s;cache=null;try{return fn(compute())}finally{for(const s of extra)delete db.series[s.id];cache=null}}
+function simStats(c,purchaseDate){
+  const tp=parseD(c.today),e=addMonths(tp.y,tp.m,11),to=ds(e.y,e.m,dim(e.y,e.m));
+  let mn=Infinity,mk=null,neg=null;
+  for(let d=c.today;d<=to;d=addDays(d,1)){const b=(c.days[d]||emptyDay).bal;if(b<mn){mn=b;mk=d}if(neg===null&&b<-0.004)neg=d}
+  let cap=Infinity;for(let d=purchaseDate>c.today?purchaseDate:c.today;d<=to;d=addDays(d,1))cap=Math.min(cap,(c.days[d]||emptyDay).bal);
+  const pp=parseD(purchaseDate),eom=ds(pp.y,pp.m,dim(pp.y,pp.m));
+  return {mn,mk,neg,cap,eom:(c.days[eom]||emptyDay).bal,perf:monthTotals(pp.y,pp.m).perf};
+}
+function openSim(date0){
+  let date=date0||todayStr(),type='diario',card='',n=1;
+  const body=`<div class="frow"><span class="ficon">${SVG_PENS}</span><input class="fin" id="sDesc" placeholder="descrição (ex.: notebook)"></div>
+  <button class="frow" id="sDate" style="width:100%;text-align:left"><span class="ficon">${SVG_CAL2}</span><span class="fl">data</span><span class="fv" id="sDateV"></span><span class="chev">${CHEV}</span></button>
+  <button class="frow" id="sMode" style="width:100%;text-align:left"><span class="ficon" id="sTypeIc"></span><span class="fl" id="sModeV"></span><span class="chev">${CHEV}</span></button>
+  <button class="frow" id="sCard" style="width:100%;text-align:left"><span class="ficon">${ic('cartao')}</span><span class="fl" id="sCardV"></span><span class="chev">${CHEV}</span></button>
+  <div class="frow nopad" id="sParc"><button class="fmain" id="sParcMain"><span class="ficon"><span class="hashic">#</span></span><span class="fl" id="sParcV"></span></button><button class="fside" id="sMinus">−</button><button class="fside" id="sPlus">+</button></div>
+  <div class="simres" id="sRes"></div>
+  <div class="fbtns"><button class="tbtn" id="sSave" style="background:#fff;color:#111">lançar essa compra</button><button class="cbtn" data-pback>só simulando, fechar</button></div>`;
+  openPage({amount:'',noClose:true,body},pg=>{
+    const $$=q=>pg.querySelector(q),amt=$$('#pgAmt');maskMoney(amt,false,true);setTimeout(()=>amt.focus(),120);
+    const hypo=total=>{
+      if(!(total>0))return [];
+      const c=db.cards[card],per=r2(total/n),start=type==='cartao'&&c?faturaDue(c,date):date;
+      return [{id:'__sim',type,desc:'simulação',amount:per,tag:[],card:type==='cartao'?card:'',start,rep:n>1?'month':'none',count:n>1?n:null,until:null,exc:{},u:0}];
+    };
+    function upd(){
+      const dp=parseD(date),c=db.cards[card];
+      $$('#sDateV').textContent=`${pad(dp.d)}/${pad(dp.m)}/${dp.y}`;
+      $$('#sTypeIc').innerHTML=ic(type);$$('#sModeV').textContent=tName(type);
+      $$('#sCard').style.display=type==='cartao'?'':'none';$$('#sParc').style.display=type==='cartao'?'':'none';
+      const sb=$$('#sSave');sb.style.background=TBTN[type][0];sb.style.color=TBTN[type][1];sb.textContent='lançar '+(type==='entrada'?'essa entrada':type==='economia'?'essa economia':type==='saida'?'essa saída':type==='cartao'?'esse gasto no cartão':'esse gasto');
+      $$('#sCardV').textContent=c&&!c.del?cardLbl(c):'escolha o cartão';
+
+      const total=parseMoney(amt.value)||0;
+      $$('#sParcV').innerHTML=n>1?`<b>${n}x</b> de ${money(total/n)}`:`<b>1x</b> ${type==='cartao'?'(à vista no cartão)':'(uma vez só)'}`;
+      $$('#sMinus').classList.toggle('dis',n<=1);
+      const R=$$('#sRes');
+      if(!(total>0)){R.innerHTML=`<p class="simtip">digite o valor para ver como essa compra mexe no seu saldo dos próximos 12 meses.</p>`;return}
+      const before=simStats(compute(),date),after=withHypo(hypo(total),c2=>simStats(c2,date));
+      const g=+db.settings.greenFrom||1000,br2=d=>{const q=parseD(d);return `${pad(q.d)}/${pad(q.m)}`};
+      let v;
+      if(type==='entrada')v=after.neg?['warn','ajuda, mas não resolve',`com essa entrada a conta ainda fica negativa em ${br2(after.neg)}; o menor saldo vai de ${money(before.mn)} para ${money(after.mn)}.`]:['ok','melhora seu saldo',`o menor saldo dos próximos meses passa de ${money(before.mn)} para ${money(after.mn)}.`];
+      else if(after.neg&&!before.neg)v=['bad','não cabe agora',`com essa compra sua conta fica negativa em ${br2(after.neg)}.`];
+      else if(after.neg)v=['bad','seu saldo já fica negativo',`sem essa compra a conta já fica negativa em ${br2(before.neg)}; com ela, o menor saldo cai para ${money(after.mn)}.`];
+      else if(after.mn<g)v=['warn','cabe, mas aperta',`o menor saldo dos próximos meses fica em ${money(after.mn)} (${br2(after.mk)}).`];
+      else v=['ok','pode comprar',`mesmo com a compra, o menor saldo fica em ${money(after.mn)} (${br2(after.mk)}).`];
+      const row=(l,a,b,s)=>`<div class="simrow"><span class="l">${l}</span><span class="r">${money(a)} → <b class="${b<0?'gneg':''}">${money(b)}</b>${s?`<small>${s}</small>`:''}</span></div>`;
+      R.innerHTML=`<div class="simv ${v[0]}"><b>${v[1]}</b><span>${v[2]}</span></div>`+
+        row(`saldo no fim de ${MESES_L[dp.m-1]}`,before.eom,after.eom)+
+        row('menor saldo (12 meses)',before.mn,after.mn,after.mk?`dia ${br2(after.mk)}`:'')+
+        row(`performance de ${MESES_L[dp.m-1]}`,before.perf,after.perf)+
+        `<p class="simtip">${before.cap>0?`a partir de ${br2(date)}, dá para gastar até <b>${money(before.cap)}</b> sem deixar a conta negativa em nenhum dia dos próximos meses.`:`sua conta já fica negativa nos próximos meses — vale revisar saídas e diário antes de comprar.`}</p>`;
+    }
+    amt.addEventListener('input',upd);
+    $$('#sDate').onclick=()=>datePicker(date,d=>{date=d;upd()});
+    $$('#sMode').onclick=()=>openSheet(`<div class="shead"><h3 class="big">tipo</h3><button class="x" data-close>${SVG_X}</button></div>`+['diario','cartao'].map(t=>`<button class="topt ${t===type?'on':''}" data-t="${t}">${ic(t,'xl')}<div><div class="tt">${tName(t)}</div><div class="ts">${t==='diario'?'débito, pix ou dinheiro: sai do saldo no dia':'cai na fatura do cartão, à vista ou parcelado'}</div></div>${t===type?`<span class="ck">${SVG_CHECK}</span>`:''}</button>`).join(''),s=>{
+      s.querySelectorAll('[data-t]').forEach(b=>b.onclick=()=>{closeSheet();type=b.dataset.t;if(type==='cartao'&&!card){const f=live(db.cards)[0];if(f)card=f.id}if(type==='diario')n=1;upd()});
+    });
+    $$('#sCard').onclick=()=>optionSheet('cartão',[...live(db.cards).map(c=>({v:c.id,label:esc(c.name),sub:(c.close?`fecha dia ${c.close} · `:'')+`vence dia ${c.due}`,icon:ic('cartao','lg')})),{v:'__new',label:'+ adicionar cartão',action:true}],card,async v=>{if(v==='__new'){const c=await cardDialog(null);if(c&&c.id)card=c.id}else card=v;upd()});
+    $$('#sMinus').onclick=()=>{if(n>1){n--;upd()}};
+    $$('#sPlus').onclick=()=>{if(n<48){n++;upd()}};
+    $$('#sParcMain').onclick=()=>quickNumber($$('#sParc'),n,1,48,v=>{n=v;upd()});
+    $$('#sSave').onclick=()=>{
+      const total=parseMoney(amt.value);if(!(total>0)){amt.focus();return toast('informe um valor')}
+      const s=hypo(total)[0],id=uid();
+      db.series[id]=Object.assign(s,{id,c:now(),u:now(),desc:$$('#sDesc').value.trim(),parc:n>1,total:n>1?r2(total):null});
+      save();back();render();toast('movimentação adicionada');
+    };
+    upd();
+  });
+}
 function chooseType(title,cb){
   openSheet(`<div class="shead"><h3 class="big">${title}</h3><div style="display:flex;gap:2px"><button class="x" id="chHelp" title="como usar">${SVG_HELP}</button><button class="x" data-close>${SVG_X}</button></div></div>`+
-    TYPE_KEYS.map(t=>`<button class="topt" data-t="${t}">${ic(t,'xl')}<div><div class="tt">${tName(t)}</div><div class="ts">${TSUB[t]}</div></div></button>`).join(''),s=>{
+    TYPE_KEYS.map(t=>`<button class="topt" data-t="${t}">${ic(t,'xl')}<div><div class="tt">${tName(t)}</div><div class="ts">${TSUB[t]}</div></div></button>`).join('')+
+    (title==='adicionar'?`<button class="topt" data-t="__sim"><span class="ic xl" style="background:#3a3e45">${SVG_SIM}</span><div><div class="tt">simular compra</div><div class="ts">veja como um gasto afeta seu saldo antes de lançar</div></div></button>`:''),s=>{
     s.querySelectorAll('[data-t]').forEach(b=>b.onclick=()=>{closeSheet();cb(b.dataset.t)});
     s.querySelector('#chHelp').onclick=()=>{closeSheet();guideSheet()};
   });
@@ -949,6 +1076,7 @@ function quickNumber(anchor,value,min,max,cb){
   setTimeout(()=>{inp.focus();inp.select()},60);
 }
 function openForm(o){
+  if(o.type==='__sim')return openSim(o.date);
   const edit=o.edit||null,s=edit?db.series[edit.sid]:null;
   let type=edit?edit.type:(o.type||'diario');
   const cnt0=s&&s.count?String(s.count):'';
@@ -1023,14 +1151,15 @@ function openForm(o){
       const vals={type,amount:isP?r2(total/n):total,desc:$$('#fDesc').value.trim(),date,tag:selTags.slice(),card:type==='cartao'?card:'',
         rep:isP?'month':rep,count,cntChanged:count!==(s&&s.count?s.count:null),parc:isP,total:isP?total:null};
       if(!edit){
-        const id=uid();db.series[id]={id,type,desc:vals.desc,amount:vals.amount,tag:vals.tag,card:vals.card,start:vals.date,rep:vals.rep,count:vals.rep==='none'?null:vals.count,parc:vals.parc,total:vals.total,until:null,exc:{},u:now()};
+        const id=uid();db.series[id]={id,c:now(),type,desc:vals.desc,amount:vals.amount,tag:vals.tag,card:vals.card,start:vals.date,rep:vals.rep,count:vals.rep==='none'?null:vals.count,parc:vals.parc,total:vals.total,until:null,exc:{},u:now()};
       }else if(!edit.rec){
         Object.assign(s,{type,desc:vals.desc,amount:vals.amount,tag:vals.tag,card:vals.card,start:vals.date,rep:vals.rep,count:vals.rep==='none'?null:vals.count,parc:vals.parc,total:vals.total,until:null,exc:{},u:now()});
       }else{
         const scope=await scopeChoice('editar');if(!scope)return;
         applyEdit(scope,s,edit,vals);
       }
-      save();back();closeSheet();render();toast('salvo ✓');
+      if(o.onSaved)o.onSaved(vals.date);
+      save();back();closeSheet();render();toast(edit?'movimentação salva':'movimentação adicionada');
     };
     doDel=async()=>{if(await deleteItem(edit)){back();closeSheet()}};
   });
@@ -1274,7 +1403,6 @@ function renderMenu(){
     ['prev','previsão do diário',`${money(dailyProj())}/dia`],
     ['cards','cartões de crédito',`${live(db.cards).length} cadastrado(s)`],
     ['tags','tags',''],
-    ['check','conferir saldo de hoje',''],
     ['sync','sincronizar celular ↔ PC',syncLine],
     ['backup','backup (exportar / importar)',''],
     ['settings','configurações',''],
@@ -1431,6 +1559,7 @@ $('#nextM').onclick=()=>{view=addMonths(view.y,view.m,1);render()};
 $('#btnToday').onclick=()=>{const p=parseD(todayStr());view={y:p.y,m:p.m};wantScrollToday=true;setTab('saldos')};
 document.addEventListener('keydown',e=>{if(e.key==='Escape'){if($('#dlgWrap').classList.contains('on'))return;if(pageStack.length)return back();closeSheet();$('#horizon').classList.remove('on')}});
 function render(){
+  if(refreshItem&&hasPage('item'))setTimeout(()=>{if(refreshItem&&hasPage('item'))refreshItem()},0);
   if(refreshDay&&hasPage('day'))setTimeout(()=>{if(refreshDay&&hasPage('day'))refreshDay()},0);
   if(tab==='totais'&&isSide())return setTab('saldos');
   renderHeader();
