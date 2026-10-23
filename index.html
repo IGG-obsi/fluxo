@@ -307,12 +307,18 @@ select option{background:var(--bg2);color:var(--txt)}
 .hint.ph{margin:10px 18px}
 input[type=date]{color-scheme:dark}
 @media (min-width:1000px){
-  #pages.on{display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,.55)}
-  .page{position:relative;inset:auto;width:560px;height:min(800px,88vh);border-radius:20px;overflow:hidden;border:1px solid var(--line)}
+  #pages.on{display:block;left:230px}
+  .page{border-left:1px solid var(--line);animation:none}
   .page:not(:last-child){display:none}
+  .page .phead{padding-left:max(16px,calc((100% - 820px) / 2));padding-right:max(16px,calc((100% - 820px) / 2))}
+  .page .pbody{padding:0 max(0px,calc((100% - 820px) / 2))}
+  .page .pfoot{padding-left:max(18px,calc((100% - 784px) / 2));padding-right:max(18px,calc((100% - 784px) / 2))}
+  .page[data-key=hz] .pbody{padding:0}
+  .page[data-key=hz] .hzc{flex-basis:calc(100% / 6);min-width:150px}
+  .page[data-key=prev] .pbody{background:var(--bg)}
 }
 @media (min-width:1000px){
-  #app{max-width:none;display:grid;grid-template-columns:220px minmax(0,1fr);grid-template-rows:auto minmax(0,1fr);grid-template-areas:"nav top" "nav main";border:0}
+  #app{max-width:none;display:grid;grid-template-columns:230px minmax(0,1fr);grid-template-rows:auto minmax(0,1fr);grid-template-areas:"nav top" "nav main";border:0}
   header.top{grid-area:top}
   main{grid-area:main}
   nav.bottom{grid-area:nav;display:flex;flex-direction:column;border-top:0;border-right:1px solid var(--line);padding:18px 12px;gap:4px}
@@ -327,10 +333,19 @@ input[type=date]{color-scheme:dark}
   #toast{bottom:40px}
   .view .pad,#view-tags,#view-menu{max-width:760px}
 }
-@media (min-width:1280px){
-  #app{grid-template-columns:230px minmax(0,1fr) 370px;grid-template-areas:"nav top side" "nav main side"}
-  .side{display:block;grid-area:side;border-left:1px solid var(--line);overflow:auto}
-  nav.bottom [data-tab=totais]{display:none}
+@media (min-width:1000px){
+  #app.side-on{grid-template-columns:230px minmax(0,1fr) 360px;grid-template-areas:"nav top side" "nav main side"}
+  #app.side-on .side{display:block;grid-area:side;border-left:1px solid var(--line);overflow:auto}
+  #app.side-on nav.bottom [data-tab=totais]{display:none}
+  .hbtn.on{background:var(--bg3);border-color:#4a4f57}
+  .sidehd{display:flex;align-items:center;justify-content:space-between;padding:14px 12px 14px 18px;border-bottom:1px solid var(--line);font-weight:700;position:sticky;top:0;background:var(--bg);z-index:1}
+  .sidehd button{width:36px;height:36px;display:flex;align-items:center;justify-content:center;color:var(--mut)}
+  .sidehd svg{width:22px;height:22px}
+  .colhead,.rows>.row,.kpis{max-width:900px;margin-left:auto;margin-right:auto;width:100%}
+  .kpis:not(:empty){grid-template-columns:repeat(3,minmax(0,1fr))!important;border-bottom:0;padding:18px 0 14px}
+  .colhead{border-top:1px solid var(--line)}
+  .rows>.row{border-left:1px solid var(--line);border-right:1px solid var(--line)}
+  .row:not(.wide):hover .vcell,.row:not(.wide):hover .dcell{background:#1f2329}
 }
 .frow .fmain .fl{flex:0 1 auto;overflow:visible;text-overflow:clip}
 .frow .fmain{gap:10px}
@@ -402,7 +417,7 @@ input[type=date]{color-scheme:dark}
     <button id="btnToday" class="cal" title="voltar para hoje"><span id="calDay">1</span></button>
     <div class="monthnav"><button id="prevM" aria-label="mês anterior">‹</button><span id="monthLbl"></span><button id="nextM" aria-label="próximo mês">›</button></div>
     <button id="btnHorizon" class="grid-ico" title="horizonte de saldos"></button>
-    <div class="hdr-actions"><button class="hbtn" id="dToday"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>hoje</button><button class="hbtn" id="dHz"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>horizonte de saldos</button></div>
+    <div class="hdr-actions"><button class="hbtn" id="dSide"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 7h7M7.5 3.5v7M14 4l6 6M20 4l-6 6M4 17h7M14 15h6M14 19h6"/></svg>totais</button><button class="hbtn" id="dToday"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>hoje</button><button class="hbtn" id="dHz"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>horizonte de saldos</button></div>
   </header>
   <main>
     <section id="view-saldos" class="view active">
@@ -421,10 +436,6 @@ input[type=date]{color-scheme:dark}
     <button data-tab="totais"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 7h7M7.5 3.5v7M14 4l6 6M20 4l-6 6M4 17h7M14 15h6M14 19h6"/></svg>totais</button>
     <button class="plus" id="btnPlus" aria-label="adicionar"><span>+</span><span class="plt">nova movimentação</span></button>
     <button data-tab="tags"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 6h10l3 4-3 4H7z"/><path d="M4 9v9h11"/></svg>tags</button>
-    <div class="navsep">atalhos</div>
-    <button class="dsk" data-go="hz"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>horizonte</button>
-    <button class="dsk" data-go="prev"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9" stroke-dasharray="3 3"/><path d="M10 8h2a4 4 0 010 8h-2z"/></svg>previsão do diário</button>
-    <button class="dsk" data-go="cards"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg>cartões</button>
     <button data-tab="menu"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 6h14M5 10h14M5 14h14M5 18h14"/></svg>menu</button>
   </nav>
 </div>
@@ -635,7 +646,7 @@ function renderHeader(){
 /* ---------- render: saldos ---------- */
 let wantScrollToday=true,scrollKey=null;
 const isWide=()=>window.matchMedia('(min-width:1000px)').matches;
-const isSide=()=>window.matchMedia('(min-width:1280px)').matches;
+const isSide=()=>isWide()&&!!ui.sideOpen;
 const SHORT={entrada:'entradas',saida:'saídas',diario:'diários',economia:'economias',cartao:'cartão'};
 function kpiHTML(){
   const c=compute(),t=c.today,n=dim(view.y,view.m),first=ds(view.y,view.m,1),last=ds(view.y,view.m,n);
@@ -646,15 +657,14 @@ function kpiHTML(){
   const card=(k,v,cls,s)=>`<div class="kpi"><div class="k">${k}</div><div class="v ${cls}">${v}</div>${s?`<div class="s">${s}</div>`:''}</div>`;
   return card('saldo hoje',money(today.bal),balCls(today.bal),niceDate(t))+
     card('fim do mês',money(end.bal),balCls(end.bal),`${MESES_L[view.m-1]}`)+
-    card('menor saldo do mês',mk?money(mn):'—',mk?balCls(mn):'',mk?`dia ${parseD(mk).d}`:'')+
-    card('diário de hoje',money(gHoje),meta>0&&gHoje>meta?'neg':'pos',`meta ${money(meta)}/dia`);
+    card('menor saldo do mês',mk?money(mn):'—',mk?balCls(mn):'',mk?`dia ${parseD(mk).d}`:'');
 }
 function renderRows(){
-  const c=compute(),today=c.today,n=dim(view.y,view.m),f=ui.filter,wide=isWide();
+  const c=compute(),today=c.today,n=dim(view.y,view.m),f=ui.filter,wide=false,kp=isWide();
   const ch=$('#colhead');ch.classList.toggle('wide',wide);
   if(wide)ch.innerHTML=`<span>dia</span>${TYPE_KEYS.map(t=>`<span class="ch">${ic(t)}${SHORT[t]}</span>`).join('')}<span class="ch" style="padding-right:14px">saldo</span>`;
   else{ch.innerHTML=`<span>dia</span><button id="filterBtn" class="pill">${ic(f)}<span>${fLabel(f)}</span><span class="chev">▾</span></button><span>saldos</span>`;$('#filterBtn').onclick=openFilter}
-  $('#kpis').innerHTML=wide?kpiHTML():'';
+  $('#kpis').innerHTML=kp?kpiHTML():'';
   let h='';
   for(let d=1;d<=n;d++){
     const k=ds(view.y,view.m,d),day=dayOf(k);
@@ -696,7 +706,7 @@ function renderRows(){
     const row=e.target.closest('.row');if(!row)return;
     if(e.target.closest('.dcell'))return toggleCheck(row.dataset.d);
     const vc=e.target.closest('.vcell');
-    openDay(row.dataset.d,vc&&vc.dataset.t?vc.dataset.t:(isWide()?'todas':ui.filter));
+    openDay(row.dataset.d,vc&&vc.dataset.t?vc.dataset.t:ui.filter);
   });
   rows.addEventListener('contextmenu',e=>{e.preventDefault();if(lp.touch)return;const row=e.target.closest('.row'),cell=e.target.closest('.vcell,.scell');if(row&&cell)openForm({date:row.dataset.d,type:typeOf(cell)})});
   rows.addEventListener('touchstart',e=>{const t=e.touches[0];sw={x:t.clientX,y:t.clientY}},{passive:true});
@@ -790,6 +800,7 @@ function back(){
   try{history.back()}catch(e){}
   setTimeout(()=>{if(pageStack[pageStack.length-1]===top)popPage()},400);
 }
+function closeAllPages(){while(pageStack.length)popPage()}
 window.addEventListener('popstate',()=>{
   const sheetOn=$('#sheetWrap').classList.contains('on');
   if(sheetOn&&pageStack.length&&$('#sheetWrap').style.zIndex==='35'){closeSheet();try{history.pushState({fluxoPage:pageStack.length},'')}catch(e){}return}
@@ -1062,6 +1073,7 @@ function openHorizon(){
 }
 $('#btnHorizon').onclick=openHorizon;
 $('#dHz').onclick=openHorizon;
+$('#dSide').onclick=()=>{ui.sideOpen=!ui.sideOpen;saveUI();if(tab==='totais')setTab('saldos');else render()};
 $('#dToday').onclick=()=>$('#btnToday').click();
 document.querySelectorAll('nav [data-go]').forEach(b=>b.onclick=()=>({hz:openHorizon,prev:prevSheet,cards:cardsSheet})[b.dataset.go]());
 
@@ -1358,7 +1370,7 @@ document.addEventListener('visibilitychange',()=>{if(document.visibilityState===
 
 /* ---------- tabs / nav ---------- */
 let tab='saldos';
-function setTab(t){tab=t;document.querySelectorAll('.view').forEach(v=>v.classList.toggle('active',v.id==='view-'+t));document.querySelectorAll('nav.bottom [data-tab]').forEach(b=>b.classList.toggle('on',b.dataset.tab===t));render()}
+function setTab(t){closeAllPages();tab=t;document.querySelectorAll('.view').forEach(v=>v.classList.toggle('active',v.id==='view-'+t));document.querySelectorAll('nav.bottom [data-tab]').forEach(b=>b.classList.toggle('on',b.dataset.tab===t));render()}
 document.querySelectorAll('nav.bottom [data-tab]').forEach(b=>b.onclick=()=>setTab(b.dataset.tab));
 $('#btnPlus').onclick=()=>chooseType('adicionar',t=>openForm({date:todayStr(),type:t}));
 $('#prevM').onclick=()=>{view=addMonths(view.y,view.m,-1);render()};
@@ -1369,11 +1381,11 @@ function render(){
   if(tab==='totais'&&isSide())return setTab('saldos');
   renderHeader();
   if(tab==='saldos')renderRows();else if(tab==='totais')renderTotais();else if(tab==='tags')renderTags();else renderMenu();
-  const side=$('#side');
-  if(isSide()){side.innerHTML=totaisHTML()+`<p class="mut small pad">clique no valor para ver/editar o dia · botão direito para lançar · clique no número do dia para o check-in</p>`;bindTotais(side)}else side.innerHTML='';
+  const side=$('#side'),so=isSide();
+  $('#app').classList.toggle('side-on',so);$('#dSide').classList.toggle('on',so);
+  if(so){side.innerHTML=`<div class="sidehd">totais do mês<button id="sideX" title="fechar">${SVG_X}</button></div>`+totaisHTML().replace(/<div class="sec">cálculos do mês · [^<]*<\/div>/,'');bindTotais(side);side.querySelector('#sideX').onclick=()=>{ui.sideOpen=false;saveUI();render()}}else side.innerHTML='';
 }
 window.matchMedia('(min-width:1000px)').addEventListener('change',()=>render());
-window.matchMedia('(min-width:1280px)').addEventListener('change',()=>render());
 
 /* ---------- first run ---------- */
 function welcome(){
