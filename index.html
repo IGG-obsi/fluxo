@@ -18,11 +18,11 @@
 }
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 html,body{height:100%;background:var(--bg);color:var(--txt);font-family:"DM Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
-body{overscroll-behavior:none}
+body{overscroll-behavior:none;position:fixed;inset:0;overflow:hidden;width:100%}
 button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 input,select{font:inherit;color:var(--txt);background:var(--bg3);border:1px solid var(--line);border-radius:10px;padding:12px;width:100%;outline:none}
 input:focus,select:focus{border-color:var(--acc)}
-#app{max-width:620px;margin:0 auto;height:100vh;height:100dvh;display:flex;flex-direction:column;border-left:1px solid var(--line);border-right:1px solid var(--line)}
+#app{max-width:620px;margin:0 auto;height:100%;display:flex;flex-direction:column;border-left:1px solid var(--line);border-right:1px solid var(--line)}
 header.top{display:flex;align-items:center;justify-content:space-between;padding:10px 16px;padding-top:calc(10px + env(safe-area-inset-top));border-bottom:1px solid var(--line);flex-shrink:0}
 .cal{width:46px;height:46px;border-radius:8px;background:var(--bg3);font-weight:700;font-size:19px;position:relative;overflow:hidden;padding-top:9px}
 .cal::before{content:'';position:absolute;top:0;left:0;right:0;height:9px;background:var(--acc)}
@@ -327,8 +327,8 @@ input[type=date]{color-scheme:dark}
   #toast{bottom:40px}
   .view .pad,#view-tags,#view-menu{max-width:760px}
 }
-@media (min-width:1400px){
-  #app{grid-template-columns:220px minmax(0,1fr) 400px;grid-template-areas:"nav top side" "nav main side"}
+@media (min-width:1280px){
+  #app{grid-template-columns:230px minmax(0,1fr) 370px;grid-template-areas:"nav top side" "nav main side"}
   .side{display:block;grid-area:side;border-left:1px solid var(--line);overflow:auto}
   nav.bottom [data-tab=totais]{display:none}
 }
@@ -366,6 +366,34 @@ input[type=date]{color-scheme:dark}
 .row.today{border-bottom:2px solid #fff}
 .topt.on .tt{color:var(--acc)}
 .topt .ck{margin-left:auto;color:var(--acc);display:flex}.topt .ck svg{width:26px;height:26px}
+.rows,.view,.pbody,.sheet,.hzw,.side{overscroll-behavior:contain}
+.dsk,.hdr-actions,.navsep,.kpis{display:none}
+.kpi{background:var(--bg2);border:1px solid var(--line);border-radius:14px;padding:14px 16px}
+.kpi .k{font-size:13px;color:var(--mut);margin-bottom:6px}
+.kpi .v{font-size:22px;font-weight:700;white-space:nowrap}
+.kpi .s{font-size:12px;color:var(--mut);margin-top:4px}
+.kpi .v.pos{background:none;color:#5cc06a}.kpi .v.mid{background:none;color:#e0b22e}.kpi .v.neg{background:none;color:#f07a7f}
+@media (min-width:1000px){
+  header.top{justify-content:flex-start;gap:12px;padding:14px 24px;min-height:74px}
+  #btnToday,#btnHorizon{display:none}
+  .monthnav span{min-width:250px;font-size:24px}
+  .hdr-actions{display:flex;gap:8px;margin-left:auto}
+  .hbtn{display:flex;align-items:center;gap:8px;padding:10px 16px;border:1px solid var(--line);border-radius:10px;font-weight:600;font-size:15px}
+  .hbtn svg{width:18px;height:18px}
+  .hbtn:hover,nav.bottom button:not(.plus):hover{background:var(--bg2)}
+  .kpis:not(:empty){display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;padding:16px 20px;border-bottom:1px solid var(--line);flex-shrink:0}
+  nav.bottom .dsk{display:flex}
+  nav.bottom button:not(.plus){text-align:left;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .navsep{display:block;font-size:11px;color:var(--mut);text-transform:uppercase;letter-spacing:.1em;padding:20px 14px 6px}
+  nav.bottom [data-tab=menu]{margin-top:auto}
+  .row.wide:hover .vcell,.row.wide:hover .dcell{background:#1f2329}
+  .colhead.wide{background:var(--bg2)}
+  .view .pad{margin:0 auto;width:100%}
+  #view-tags>*,#view-menu>*{max-width:820px;margin-left:auto;margin-right:auto;width:100%}
+  .side .sec{font-size:14px;padding:18px 18px 10px}
+  .side .calc{padding:14px 18px}.side .calc .ct{font-size:16px;margin-bottom:6px}.side .cv{font-size:16px}.side .cs{font-size:12px}
+  .side .mrow{font-size:15px;padding:13px 18px}
+}
 </style>
 </head>
 <body>
@@ -374,9 +402,11 @@ input[type=date]{color-scheme:dark}
     <button id="btnToday" class="cal" title="voltar para hoje"><span id="calDay">1</span></button>
     <div class="monthnav"><button id="prevM" aria-label="mês anterior">‹</button><span id="monthLbl"></span><button id="nextM" aria-label="próximo mês">›</button></div>
     <button id="btnHorizon" class="grid-ico" title="horizonte de saldos"></button>
+    <div class="hdr-actions"><button class="hbtn" id="dToday"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>hoje</button><button class="hbtn" id="dHz"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>horizonte de saldos</button></div>
   </header>
   <main>
     <section id="view-saldos" class="view active">
+      <div class="kpis" id="kpis"></div>
       <div class="colhead" id="colhead"></div>
       <div id="rows" class="rows"></div>
     </section>
@@ -391,6 +421,10 @@ input[type=date]{color-scheme:dark}
     <button data-tab="totais"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 7h7M7.5 3.5v7M14 4l6 6M20 4l-6 6M4 17h7M14 15h6M14 19h6"/></svg>totais</button>
     <button class="plus" id="btnPlus" aria-label="adicionar"><span>+</span><span class="plt">nova movimentação</span></button>
     <button data-tab="tags"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 6h10l3 4-3 4H7z"/><path d="M4 9v9h11"/></svg>tags</button>
+    <div class="navsep">atalhos</div>
+    <button class="dsk" data-go="hz"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>horizonte</button>
+    <button class="dsk" data-go="prev"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9" stroke-dasharray="3 3"/><path d="M10 8h2a4 4 0 010 8h-2z"/></svg>previsão do diário</button>
+    <button class="dsk" data-go="cards"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg>cartões</button>
     <button data-tab="menu"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 6h14M5 10h14M5 14h14M5 18h14"/></svg>menu</button>
   </nav>
 </div>
@@ -591,7 +625,7 @@ const scopeChoice=verb=>dialog(`${verb} movimentação recorrente`,'essa movimen
 /* ---------- render: header ---------- */
 function renderHeader(){
   $('#calDay').textContent=parseD(todayStr()).d;
-  $('#monthLbl').textContent=`${MESES[view.m-1]}/${String(view.y).slice(2)}`;
+  $('#monthLbl').textContent=isWide()?`${MESES_L[view.m-1]} de ${view.y}`:`${MESES[view.m-1]}/${String(view.y).slice(2)}`;
   // grid icon: colors of next 9 months' end balance
   const tp=parseD(todayStr());let h='';
   for(let i=0;i<9;i++){const a=addMonths(tp.y,tp.m,i);const t=(compute().days[ds(a.y,a.m,dim(a.y,a.m))]||emptyDay).bal;h+=`<i style="background:var(--${balCls(t)})"></i>`}
@@ -601,13 +635,26 @@ function renderHeader(){
 /* ---------- render: saldos ---------- */
 let wantScrollToday=true,scrollKey=null;
 const isWide=()=>window.matchMedia('(min-width:1000px)').matches;
-const isSide=()=>window.matchMedia('(min-width:1400px)').matches;
+const isSide=()=>window.matchMedia('(min-width:1280px)').matches;
 const SHORT={entrada:'entradas',saida:'saídas',diario:'diários',economia:'economias',cartao:'cartão'};
+function kpiHTML(){
+  const c=compute(),t=c.today,n=dim(view.y,view.m),first=ds(view.y,view.m,1),last=ds(view.y,view.m,n);
+  const today=dayOf(t),end=dayOf(last);
+  let mn=Infinity,mk=null;
+  for(let d=1;d<=n;d++){const k=ds(view.y,view.m,d);if(k<t&&last>=t)continue;const b=dayOf(k).bal;if(b<mn){mn=b;mk=k}}
+  const meta=dailyProj(first),gHoje=today.sums.diario-today.projD;
+  const card=(k,v,cls,s)=>`<div class="kpi"><div class="k">${k}</div><div class="v ${cls}">${v}</div>${s?`<div class="s">${s}</div>`:''}</div>`;
+  return card('saldo hoje',money(today.bal),balCls(today.bal),niceDate(t))+
+    card('fim do mês',money(end.bal),balCls(end.bal),`${MESES_L[view.m-1]}`)+
+    card('menor saldo do mês',mk?money(mn):'—',mk?balCls(mn):'',mk?`dia ${parseD(mk).d}`:'')+
+    card('diário de hoje',money(gHoje),meta>0&&gHoje>meta?'neg':'pos',`meta ${money(meta)}/dia`);
+}
 function renderRows(){
   const c=compute(),today=c.today,n=dim(view.y,view.m),f=ui.filter,wide=isWide();
   const ch=$('#colhead');ch.classList.toggle('wide',wide);
   if(wide)ch.innerHTML=`<span>dia</span>${TYPE_KEYS.map(t=>`<span class="ch">${ic(t)}${SHORT[t]}</span>`).join('')}<span class="ch" style="padding-right:14px">saldo</span>`;
   else{ch.innerHTML=`<span>dia</span><button id="filterBtn" class="pill">${ic(f)}<span>${fLabel(f)}</span><span class="chev">▾</span></button><span>saldos</span>`;$('#filterBtn').onclick=openFilter}
+  $('#kpis').innerHTML=wide?kpiHTML():'';
   let h='';
   for(let d=1;d<=n;d++){
     const k=ds(view.y,view.m,d),day=dayOf(k);
@@ -1014,6 +1061,9 @@ function openHorizon(){
   });
 }
 $('#btnHorizon').onclick=openHorizon;
+$('#dHz').onclick=openHorizon;
+$('#dToday').onclick=()=>$('#btnToday').click();
+document.querySelectorAll('nav [data-go]').forEach(b=>b.onclick=()=>({hz:openHorizon,prev:prevSheet,cards:cardsSheet})[b.dataset.go]());
 
 /* ---------- totais ---------- */
 const PJ='<span class="ic pj">D</span>';
@@ -1323,7 +1373,7 @@ function render(){
   if(isSide()){side.innerHTML=totaisHTML()+`<p class="mut small pad">clique no valor para ver/editar o dia · botão direito para lançar · clique no número do dia para o check-in</p>`;bindTotais(side)}else side.innerHTML='';
 }
 window.matchMedia('(min-width:1000px)').addEventListener('change',()=>render());
-window.matchMedia('(min-width:1400px)').addEventListener('change',()=>render());
+window.matchMedia('(min-width:1280px)').addEventListener('change',()=>render());
 
 /* ---------- first run ---------- */
 function welcome(){
