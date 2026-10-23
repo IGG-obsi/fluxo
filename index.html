@@ -362,6 +362,10 @@ input[type=date]{color-scheme:dark}
 .hzr{flex:0 0 calc((100% - 50px) / 31);min-height:0;height:auto;border-bottom-width:1px;padding:0;overflow:hidden}
 .hzr .d{font-size:clamp(11px,1.9vh,17px)}
 .hzr .v{font-size:clamp(11px,1.9vh,17px);padding-right:8px}
+.row.today{border-bottom:2px solid #fff}
+.row.today{border-bottom:2px solid #fff}
+.topt.on .tt{color:var(--acc)}
+.topt .ck{margin-left:auto;color:var(--acc);display:flex}.topt .ck svg{width:26px;height:26px}
 </style>
 </head>
 <body>
@@ -658,7 +662,10 @@ function renderRows(){
 function toggleCheck(k){const cur=db.checks[k]&&db.checks[k].v;db.checks[k]={v:!cur,u:now()};save();renderRows();if(!cur)toast(`check-in de ${niceDate(k)} ✓`)}
 
 function openFilter(){
-  openSheet(shead('mostrar')+FILTERS.map(f=>`<button class="opt ${f===ui.filter?'on':''}" data-f="${f}">${ic(f,'lg')}${fLabel(f)}</button>`).join(''),s=>{
+  const sub={...TSUB,todas:'tudo que entra e sai no dia'};
+  const name=f=>f==='todas'?'todas':TYPES[f].label;
+  openSheet(`<div class="shead"><h3 class="big">mostrar</h3><button class="x" data-close>${SVG_X}</button></div>`+
+    FILTERS.map(f=>`<button class="topt ${f===ui.filter?'on':''}" data-f="${f}">${ic(f,'xl')}<div><div class="tt">${name(f)}</div><div class="ts">${sub[f]}</div></div>${f===ui.filter?`<span class="ck">${SVG_CHECK}</span>`:''}</button>`).join(''),s=>{
     s.querySelectorAll('[data-f]').forEach(b=>b.onclick=()=>{ui.filter=b.dataset.f;saveUI();closeSheet();renderRows()});
   });
 }
