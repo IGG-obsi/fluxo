@@ -367,7 +367,7 @@ input[type=date]{color-scheme:dark}
 .topt.on .tt{color:var(--acc)}
 .topt .ck{margin-left:auto;color:var(--acc);display:flex}.topt .ck svg{width:26px;height:26px}
 .rows,.view,.pbody,.sheet,.hzw,.side{overscroll-behavior:contain}
-.dsk,.hdr-actions,.navsep,.kpis{display:none}
+.dsk,.hdr-actions,.navsep,.kpis,nav.bottom .dsk,nav.bottom .navsep{display:none}
 .kpi{background:var(--bg2);border:1px solid var(--line);border-radius:14px;padding:14px 16px}
 .kpi .k{font-size:13px;color:var(--mut);margin-bottom:6px}
 .kpi .v{font-size:22px;font-weight:700;white-space:nowrap}
@@ -384,7 +384,7 @@ input[type=date]{color-scheme:dark}
   .kpis:not(:empty){display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;padding:16px 20px;border-bottom:1px solid var(--line);flex-shrink:0}
   nav.bottom .dsk{display:flex}
   nav.bottom button:not(.plus){text-align:left;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-  .navsep{display:block;font-size:11px;color:var(--mut);text-transform:uppercase;letter-spacing:.1em;padding:20px 14px 6px}
+  nav.bottom .navsep{display:block;font-size:11px;color:var(--mut);text-transform:uppercase;letter-spacing:.1em;padding:20px 14px 6px}
   nav.bottom [data-tab=menu]{margin-top:auto}
   .row.wide:hover .vcell,.row.wide:hover .dcell{background:#1f2329}
   .colhead.wide{background:var(--bg2)}
